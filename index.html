@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2c6e57">
+<title>Minha Faxina</title>
+<meta name="description" content="Agenda, casas e preferências das clientes da diarista, num só lugar.">
+<meta property="og:title" content="Minha Faxina">
+<meta property="og:description" content="Agenda, casas e preferências das clientes, num só lugar. 💚">
+<meta property="og:image" content="https://ina-rgb.github.io/minhafaxina/og.jpg">
+<meta property="og:url" content="https://ina-rgb.github.io/minhafaxina/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Minha Faxina">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap">
+<style>
+:root{--c:#2c6e57;--dark:color-mix(in srgb,var(--c) 72%,black);--soft:color-mix(in srgb,var(--c) 12%,#fffdf8);--soft2:color-mix(in srgb,var(--c) 22%,#fffdf8);--line:color-mix(in srgb,var(--c) 18%,#ece6da);--ink:#23302a;--muted:#6b7570;--gold:#b88739;--ok:#3f8a4e;--warn:#c38922;--bad:#b3261e;color-scheme:light}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at top left,var(--soft2),transparent 60%),#fbfaf6;min-height:100vh}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit}
+input,select,textarea{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);min-width:0}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:14px;margin:12px 0;font-weight:600}
+label small{font-weight:400;color:var(--muted)}
+button{cursor:pointer;border:0;border-radius:14px;padding:12px 16px;background:linear-gradient(135deg,var(--dark),var(--c));color:#fff;font-weight:600}
+button.light{background:var(--soft);color:var(--dark);border:1px solid var(--line)}
+button.white{background:#fff;color:var(--dark);border:1px solid var(--line)}
+button.danger{background:#fff;color:var(--bad);border:1px solid #e9c9c6}
+button.mini{padding:7px 10px;font-size:13px;border-radius:10px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--c) 45%,white);outline-offset:2px}
+a.btn{display:block;text-align:center;text-decoration:none;border-radius:14px;padding:13px 16px;font-weight:600;background:linear-gradient(135deg,var(--dark),var(--c));color:#fff}
+a.btn.light{background:var(--soft);color:var(--dark);border:1px solid var(--line)}
+.full{display:block;width:100%;margin:8px 0}
+.notice{font-size:11px;background:var(--soft2);color:var(--dark);padding:5px;text-align:center}
+#storageWarn{background:var(--bad);color:#fff;padding:12px;text-align:center;font-size:14px}
+header{max-width:580px;margin:auto;background:linear-gradient(140deg,var(--dark),var(--c));color:#fff;border-radius:0 0 34px 34px;padding:22px 20px 28px;display:flex;align-items:center;gap:14px;justify-content:center;box-shadow:0 6px 20px #0002;position:relative}
+.brandIcon{width:58px;height:58px;border-radius:50%;background:#fff;display:grid;place-items:center;flex-shrink:0;color:var(--c);overflow:hidden}
+.brandIcon img{width:100%;height:100%;object-fit:contain}
+.brandIcon svg{width:44px;height:44px}
+header h1{margin:0;font-family:'Dancing Script',Georgia,serif;font-weight:700;font-size:40px;line-height:1.05}
+header small{display:block;letter-spacing:2px;font-size:11px;opacity:.85;text-transform:uppercase}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.hbadge{font-size:10px;background:#ffffff26;border-radius:20px;padding:3px 9px;color:#fff;border:0;font-weight:600}
+main{max-width:580px;margin:auto;padding:16px 14px 120px}
+nav{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);max-width:550px;width:calc(100% - 20px);z-index:10;background:#fffdf8ee;border:1px solid var(--line);border-radius:23px;box-shadow:0 3px 24px #0002;padding:7px;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;backdrop-filter:blur(12px)}
+nav button{background:transparent;color:var(--dark);padding:7px 2px;font-size:11px;border-radius:16px}
+nav button.active{background:var(--soft2)}
+.navIcon{display:block;font-size:22px;line-height:26px;margin-bottom:2px}
+h2{font-family:Georgia,serif;font-size:25px;margin:8px 0 12px;color:var(--dark)}
+h3{font-size:17px;margin:0 0 8px}
+.card{background:linear-gradient(135deg,#fff,var(--soft));border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 9px #0000000a}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.center{text-align:center}
+.welcome{text-align:center;font-family:Georgia,serif;font-size:20px;line-height:1.35;margin:4px 0 14px;color:var(--dark)}
+.cover{display:block;width:100%;border-radius:18px;margin:2px 0 14px;max-height:200px;object-fit:cover;box-shadow:0 4px 14px #0001;background:var(--soft)}
+.coverArt{width:100%;border-radius:18px;margin:2px 0 14px;background:linear-gradient(160deg,var(--soft2),#fffdf8);color:var(--c);display:block}
+.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+.shortcuts button{background:#fffdf8;color:var(--dark);border:1px solid var(--line);border-radius:16px;padding:10px 2px;font-size:11.5px;line-height:1.2;box-shadow:0 3px 8px #0000000d}
+.scIcon{display:grid;place-items:center;width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:var(--soft2);font-size:22px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1}
+.row>.tag{flex:0 0 auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tag{display:inline-block;background:var(--soft2);color:var(--dark);border-radius:8px;padding:2px 7px;font-size:12px;font-weight:600;margin:2px 2px 0 0}
+.tag.ok{background:#e2efd9;color:#2f6b3a}.tag.warn{background:#fff1ce;color:#7a5512}.tag.bad{background:#f6dedb;color:#8d2a22}.tag.grey{background:#ece9e3;color:#6b6b6b}
+.houseRow{display:flex;gap:12px;align-items:center;cursor:pointer;width:100%;background:none;color:inherit;padding:0;text-align:left;border-radius:0;font-weight:400}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--soft2);color:var(--c);display:grid;place-items:center;font-family:Georgia,serif;font-size:24px;font-weight:700;flex-shrink:0;border:3px solid #fff}
+.houseRow strong{font-family:Georgia,serif;font-size:19px;display:block}
+.chev{color:#a9b3ad;font-size:24px}
+.dayNav{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:center}
+.dayNav b{font-family:Georgia,serif;font-size:18px;color:var(--dark)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0}
+.week button{background:#fff;color:var(--ink);border:1px solid var(--line);padding:6px 0;font-size:11px;border-radius:12px;font-weight:600}
+.week button.on{background:var(--c);color:#fff}
+.week button i{display:block;font-style:normal;font-size:15px}
+.week button em{display:block;font-style:normal;font-size:10px;color:inherit;opacity:.75}
+.period{margin-top:12px}
+.periodHead{font-weight:700;color:var(--dark);font-size:14px;margin-bottom:6px;display:flex;justify-content:space-between}
+.visit{background:#fff;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:12px;margin-bottom:8px}
+.visit.done{border-left-color:var(--ok);opacity:.8}
+.visit.off{border-left-color:#bbb;opacity:.7}
+.visit.rep{border-left-color:var(--warn)}
+.visit .vTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.visit .vTop strong{font-size:17px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.actions button{padding:10px 6px;font-size:13.5px}
+.actions .wide{grid-column:1/-1}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.dots i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#ece9e3;color:#777;font-style:normal;font-size:12px;font-weight:700}
+.dots i.done{background:var(--ok);color:#fff}.dots i.bad{background:#d9d4cc;color:#8a8a8a}.dots i.rep{background:#f3d58e;color:#6d4d0e}.dots i.next{background:var(--soft2);color:var(--dark)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 2px}
+.stats b{display:block;font-size:20px;color:var(--dark)}
+.stats small{font-size:11px;color:var(--muted)}
+.money{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.money:last-child{border-bottom:0}
+.money b{font-size:17px}
+.lock{background:repeating-linear-gradient(135deg,#fff,#fff 10px,var(--soft) 10px,var(--soft) 20px);border:1px dashed color-mix(in srgb,var(--c) 45%,#ccc);border-radius:18px;padding:16px;margin:12px 0;text-align:center}
+.lock .lk{font-size:28px}
+.lock b{display:block;color:var(--dark);font-family:Georgia,serif;font-size:18px;margin:4px 0}
+.menuList{display:grid;gap:8px}
+.menuTile{display:flex;align-items:center;gap:12px;background:#fffdf8;color:var(--ink);border:1px solid var(--line);text-align:left;padding:14px;border-radius:16px;font-weight:400}
+.menuTile .mIc{font-size:24px;width:44px;height:44px;display:grid;place-items:center;background:var(--soft2);border-radius:13px;flex-shrink:0}
+.menuTile b{display:block;font-size:16px}
+.menuTile small{color:var(--muted)}
+.menuTile .chev{margin-left:auto}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sw{height:62px;border-radius:14px;color:#fff;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:3px solid transparent}
+.sw.on{border-color:#222}
+.tileImg{display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;min-height:110px;margin-bottom:10px;padding:8px;color:var(--c)}
+.tileImg img{max-height:140px;max-width:100%;border-radius:10px}
+.tileImg svg{width:90px;height:90px}
+.fileBtn{display:block;text-align:center;border-radius:14px;padding:13px;background:linear-gradient(135deg,var(--dark),var(--c));color:#fff;font-weight:600;cursor:pointer;margin:0}
+.daysGrid{display:grid;gap:6px}
+.dayRows{display:grid;gap:6px;margin:6px 0}
+.dayRow{display:grid;grid-template-columns:38px repeat(4,1fr);gap:4px;align-items:center}
+.dayRow b{color:var(--dark);font-size:14px}
+.pchip{position:relative;margin:0}
+.pchip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.pchip span{display:block;text-align:center;padding:10px 0;border:1.5px solid var(--line);border-radius:11px;background:#fff;font-size:12px;font-weight:600;color:var(--dark);white-space:nowrap}
+.pchip input:checked+span{background:var(--c);color:#fff;border-color:var(--c)}
+.pchip input:focus-visible+span{outline:3px solid color-mix(in srgb,var(--c) 45%,white)}
+.filterBar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0 4px}
+.filterBar button{background:#fff;color:var(--dark);border:1.5px solid var(--line);padding:11px 4px;font-size:14px}
+.filterBar button.on{background:var(--c);color:#fff;border-color:var(--c)}
+.stats .statBtn{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 2px;color:inherit;font-weight:400}
+.stats .statBtn.on{border-color:var(--c);background:var(--soft2)}
+.dayBoxes{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:4px 0 6px}
+.dayBox{position:relative;margin:0}
+.dayBox input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.dayBox span{display:block;text-align:center;padding:12px 0;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-size:13px;font-weight:700;color:var(--dark)}
+.dayBox input:checked+span{background:var(--c);color:#fff;border-color:var(--c)}
+
+.dayBox input:focus-visible+span{outline:3px solid color-mix(in srgb,var(--c) 45%,white)}
+.dayLine{display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center}
+.dayLine span{font-weight:700;color:var(--dark)}
+.dayLine select{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;width:100%;height:100%}
+.chip span{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:15px;font-weight:500}
+.chip input:checked+span{background:var(--c);color:#fff;border-color:var(--c)}
+.chip input:focus-visible+span{outline:3px solid color-mix(in srgb,var(--c) 45%,white)}
+details.pop{border-top:1px solid var(--line);padding:8px 0}
+details.pop summary{font-weight:700;cursor:pointer;color:var(--dark);padding:4px 0}
+details.pop p{margin:6px 0;font-size:14px}
+.checkItem{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-weight:400;margin:0}
+.checkItem input{width:24px;height:24px;margin:0;flex-shrink:0}
+.checkItem.done span{text-decoration:line-through;color:var(--muted)}
+pre.box{white-space:pre-wrap;font:14px/1.45 system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:340px;overflow:auto;margin:8px 0}
+.linkbox{word-break:break-all;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+.alert{padding:12px 14px;background:#fff1ce;border-left:4px solid var(--warn);border-radius:10px;font-size:14px;margin:10px 0}
+.tip{padding:12px 14px;background:var(--soft);border-radius:12px;font-size:14px;margin:10px 0}
+#feedback{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:550px;z-index:50;background:var(--dark);color:#fff;border-radius:14px;padding:12px;text-align:center;font-weight:600;box-shadow:0 6px 20px #0003;display:none}
+#feedback.erro{background:var(--bad)}
+#modal{position:fixed;inset:0;background:#0006;z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:10px}
+#modal .sheet{background:#fffdf8;border-radius:24px;padding:20px 18px;width:100%;max-width:560px;max-height:88vh;overflow:auto;margin-bottom:env(safe-area-inset-bottom,0px)}
+#modal h3{font-family:Georgia,serif;font-size:21px;color:var(--dark)}
+footer{max-width:580px;margin:auto;padding:0 16px 110px;text-align:center;font-size:11px;color:var(--muted)}
+.steplabel{font-size:13px;color:var(--muted)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 4px}
+.progress>i{display:block;height:100%;background:var(--c)}
+@media(max-width:360px){.shortcuts{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}header h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="storageWarn" hidden>Atenção: este celular não está guardando os dados. Use a Cópia de segurança antes de fechar.</div>
+<div class="notice" id="notice">Versão de teste • Salve sua cópia toda semana</div>
+<header id="header"></header>
+<main id="screen"></main>
+<nav id="nav" aria-label="Menu principal"></nav>
+<footer id="footer"></footer>
+<div id="feedback" role="status" aria-live="polite"></div>
+<div id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
+
+<script>
+(function(){
+"use strict";
+const COPY="© I.N.A.T — uso licenciado. Proibida a cópia ou revenda.";
+const PAGE_URL="https://ina-rgb.github.io/minhafaxina/";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const num=v=>{const n=parseFloat(String(v||'').replace(/\./g,'').replace(',','.'));return isNaN(n)?0:n};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const today=()=>ymd(new Date());
+const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DOWL=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const PER={M:'Manhã',T:'Tarde',N:'Noite',D:'Dia todo'};
+const fmtD=s=>{const d=parse(s);return DOWL[d.getDay()]+', '+pad(d.getDate())+'/'+pad(d.getMonth()+1)};
+const fmtShort=s=>{const d=parse(s);return pad(d.getDate())+'/'+pad(d.getMonth()+1)};
+const ymOf=s=>s.slice(0,7);
+const monthName=ym=>{const[y,m]=ym.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'})};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const addMonth=(ym,n)=>{const[y,m]=ym.split('-').map(Number);const d=new Date(y,m-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)};
+const waLink=(phone,text)=>{let d=String(phone||'').replace(/\D/g,'');if(d.length===10||d.length===11)d='55'+d;return 'https://wa.me/'+d+(text?'?text='+encodeURIComponent(text):'')};
+const b64e=s=>btoa(unescape(encodeURIComponent(s)));
+const b64d=s=>decodeURIComponent(escape(atob(s)));
+
+/* ---------- ilustração própria: casa + balde + borrifador + brilhos ---------- */
+const ART=(big)=>`<svg viewBox="0 0 120 96" ${big?'class="coverArt"':''} role="img" aria-label="Casinha limpa com balde e borrifador" xmlns="http://www.w3.org/2000/svg">
+${big?'<rect x="0" y="0" width="120" height="96" fill="none"/>':''}
+<g fill="currentColor">
+<path d="M60 14 L94 40 L89 40 L89 74 L31 74 L31 40 L26 40 Z" opacity=".18"/>
+<path d="M60 10 L98 40 L92 44 L60 19 L28 44 L22 40 Z"/>
+<rect x="31" y="40" width="58" height="34" rx="2" fill="none" stroke="currentColor" stroke-width="3.2"/>
+<rect x="38" y="47" width="15" height="13" rx="2"/>
+<rect x="64" y="52" width="13" height="22" rx="2"/>
+<circle cx="74" cy="64" r="1.4" fill="#fff"/>
+<path d="M44 47v13M38 53.5h15" stroke="#fff" stroke-width="1.6"/>
+<rect x="79" y="24" width="7" height="11" rx="1"/>
+</g>
+<g fill="currentColor">
+<path d="M8 66h20l-2.4 18a3 3 0 0 1-3 2.6h-9.2a3 3 0 0 1-3-2.6Z" opacity=".85"/>
+<path d="M9 66c0-6 18-6 18 0" fill="none" stroke="currentColor" stroke-width="2.2"/>
+<circle cx="13" cy="62" r="3.2" opacity=".35"/><circle cx="19" cy="60" r="4" opacity=".35"/><circle cx="24.5" cy="62.5" r="2.8" opacity=".35"/>
+</g>
+<g fill="currentColor">
+<rect x="99" y="60" width="13" height="26" rx="4" opacity=".85"/>
+<path d="M101 60v-6h9v6Z"/>
+<path d="M101 54h-7v4h7Z"/>
+<rect x="102" y="68" width="7" height="9" rx="1.5" fill="#fff" opacity=".7"/>
+</g>
+<g fill="currentColor" class="spark">
+<path d="M90 50l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6Z" opacity=".9"/>
+<path d="M18 30l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2Z" opacity=".7"/>
+<path d="M104 22l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1Z" opacity=".6"/>
+<path d="M50 26l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z" opacity=".6"/>
+</g>
+<path d="M4 88h112" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".35"/>
+</svg>`;
+
+/* ---------- perguntas do formulário da cliente ---------- */
+const BLOCKS=[
+ {title:"A casa",qs:[
+  {id:"cliente",t:"Seu nome",type:"text",req:true},
+  {id:"fone",t:"Seu WhatsApp com DDD",type:"text",hint:"Para os avisos e o relatório da visita. Ex.: 47 99999-8888"},
+  {id:"q1",t:"Endereço e tipo de imóvel",type:"text",hint:"Ex.: apartamento, Rua X 123 – Centro"},
+  {id:"q1b",t:"Tipo de local",type:"radio",opts:["Casa","Apartamento","Escritório","Outro"]},
+  {id:"q2",t:"Quantos quartos, banheiros e áreas externas?",type:"text",hint:"Ex.: 3 quartos, 2 banheiros, sacada"},
+  {id:"q3",t:"Quem mora ou trabalha no local?",type:"textarea",hint:"Tem crianças, idosos ou alguém com alergia ou sensibilidade a cheiro?"},
+  {id:"q4",t:"Tem animais? Quais e onde ficam durante a limpeza?",type:"text"},
+  {id:"q5",t:"Como será o acesso no dia?",type:"radio",opts:["Alguém estará em casa","Portaria libera","Deixo a chave","Combinamos depois"],hint:"Senhas e códigos de alarme combinamos pessoalmente, não por aqui."}]},
+ {title:"Prioridades",qs:[
+  {id:"q6",t:"Quais cômodos são prioridade em toda visita?",type:"checks",opts:["Banheiros","Cozinha","Quartos","Sala","Área de serviço","Área externa"]},
+  {id:"q7",t:"Algum cômodo ou móvel que NÃO devo mexer?",type:"text",hint:"Ex.: mesa do escritório, papéis, coleções"},
+  {id:"q8",t:"O que mais te incomoda quando não está limpo?",type:"text",hint:"Ex.: box, fogão, chão, vidros"},
+  {id:"q9a",t:"Tarefas que você quer em TODAS as visitas",type:"textarea"},
+  {id:"q9b",t:"Tarefas só de vez em quando",type:"checks",opts:["Vidros","Geladeira por dentro","Forno","Armários por dentro","Cortinas","Colchões"]}]},
+ {title:"Superfícies e cuidados",qs:[
+  {id:"q10",t:"Tipo de piso",type:"checks",opts:["Porcelanato","Cerâmica","Madeira ou laminado","Pedra","Carpete","Vinílico"]},
+  {id:"q11",t:"Tem algum destes materiais?",type:"checks",opts:["Mármore","Granito","Inox","Couro","Veludo","Madeira natural","Prata","Cristal"]},
+  {id:"q12",t:"Objetos frágeis, de valor ou de estimação que exigem cuidado",type:"textarea",hint:"Ou que você prefere que eu não toque"},
+  {id:"q13",t:"Algum dano que já existe e que devo saber?",type:"textarea",hint:"Mancha, risco, peça quebrada. As fotos você manda no WhatsApp no final."},
+  {id:"q13f",t:"Você tem fotos desses danos para me mandar?",type:"radio",opts:["Sim, vou mandar no WhatsApp","Não tenho fotos","Não há danos"]}]},
+ {title:"Produtos",qs:[
+  {id:"q14",t:"Produtos de limpeza",type:"radio",opts:["Pode levar os seus","Use os da casa","Tanto faz"]},
+  {id:"q15",t:"Algum produto proibido ou preferido?",type:"text",hint:"Ex.: sem cheiro, sem cloro, linha natural, marca específica"},
+  {id:"q16",t:"Onde ficam produtos, panos, aspirador e balde?",type:"text"}]},
+ {title:"Roupas",note:"Pule este bloco se roupas não fazem parte do serviço.",qs:[
+  {id:"q17",t:"O que fazer com as roupas?",type:"checks",opts:["Lavar","Passar","Só dobrar e guardar","Não incluir roupas"]},
+  {id:"q17b",t:"Peças que não vão à máquina",type:"text"},
+  {id:"q18",t:"Amaciante",type:"radio",opts:["Sim","Não","Só em algumas peças"]},
+  {id:"q19",t:"Como gosta da cama e das toalhas?",type:"textarea",hint:"Lençol de cima, travesseiros, dobra; toalhas dobradas ou penduradas"},
+  {id:"q20",t:"De quanto em quanto tempo troca roupa de cama e toalhas?",type:"text"}]},
+ {title:"Organização e cozinha",qs:[
+  {id:"q21",t:"Posso reorganizar armários?",type:"radio",opts:["Pode","Prefiro tudo no mesmo lugar","Me pergunte antes"]},
+  {id:"q22",t:"Louça",type:"radio",opts:["Lavar tudo da pia","Usar a lava-louças","Não incluir louça"]},
+  {id:"q23",t:"Alimentos vencidos na geladeira",type:"radio",opts:["Pode descartar","Só me avise"]},
+  {id:"q24",t:"Lixo e recicláveis: onde e como separar?",type:"text"}]},
+ {title:"Comunicação",qs:[
+  {id:"q25",t:"Como prefere receber o relatório da visita?",type:"checks",opts:["Texto no WhatsApp","Áudio","Fotos","Não precisa"]},
+  {id:"q26",t:"Se eu encontrar algo quebrado ou um problema, como aviso?",type:"radio",opts:["Ligar na hora","Mensagem na hora","No relatório do fim do dia"]},
+  {id:"q27",t:"Algo que outra profissional fazia e você NÃO gostava?",type:"textarea"},
+  {id:"q28",t:"O que faria você dizer \"uau\" ao chegar em casa?",type:"textarea",hint:"Um detalhe que faz diferença para você"}]}
+];
+const POP=[
+ ["Casa e acesso",["fone","q1b","q1","q2","q5"]],["Pessoas e cuidados",["q3","q4"]],["Prioridades da visita",["q6","q8","q9a"]],
+ ["Não mexer",["q7","q12"]],["Superfícies",["q10","q11"]],["Danos já existentes",["q13","q13f"]],["Produtos",["q14","q15","q16"]],
+ ["Roupas",["q17","q17b","q18","q19","q20"]],["Cozinha e organização",["q21","q22","q23","q24"]],["Comunicação",["q25","q26","q27"]],
+ ["Tarefas de vez em quando",["q9b"]]];
+const LABELS={};BLOCKS.forEach(b=>b.qs.forEach(q=>LABELS[q.id]=q.t));
+const aval=(a,id)=>{const v=a&&a[id];return Array.isArray(v)?v.join(', '):String(v||'').trim()};
+const flat=v=>v.replace(/\s*\n+\s*/g,' / ');
+
+/* ================= MODO CLIENTE (formulário) ================= */
+const H=(location.hash||'').replace(/^#/,'');
+const FM=H.match(/^f-(\d{12,13})(?:-([A-Za-z0-9-]{1,60}))?$/);
+if(FM){clientForm({phone:FM[1],name:(FM[2]||'').replace(/-+/g,' ').trim()||'a profissional'});return}
+
+function clientForm(pro){
+ $('#nav').hidden=true;$('#notice').hidden=true;$('#footer').textContent=COPY;$('#footer').style.paddingBottom='30px';
+ const KEYC='mf-form:'+pro.phone;let ans={};try{ans=JSON.parse(localStorage.getItem(KEYC)||'{}')||{}}catch(e){}
+ const sv=()=>{try{localStorage.setItem(KEYC,JSON.stringify(ans))}catch(e){}};
+ let step=0;const N=BLOCKS.length;
+ $('#header').innerHTML=`<div class="brandIcon">${ART()}</div><div><small>Antes da primeira visita</small><h1>Sua casa, do seu jeito</h1></div>`;
+ function field(q){
+  const id='f-'+q.id;
+  if(q.type==='text'||q.type==='textarea'){
+   const inp=q.type==='text'?`<input id="${id}" data-q="${q.id}" ${q.id==='fone'?'inputmode="tel"':''} value="${esc(ans[q.id]||'')}">`:`<textarea id="${id}" data-q="${q.id}">${esc(ans[q.id]||'')}</textarea>`;
+   return `<label for="${id}">${esc(q.t)}${q.req?' *':''}${q.hint?`<br><small>${esc(q.hint)}</small>`:''}${inp}</label>`}
+  const multi=q.type==='checks';const cur=ans[q.id];
+  return `<div role="${multi?'group':'radiogroup'}" aria-labelledby="${id}-l" style="margin:14px 0"><div id="${id}-l" style="font-weight:600;font-size:14px">${esc(q.t)}</div>${q.hint?`<small class="muted">${esc(q.hint)}</small>`:''}<div class="chips">${q.opts.map((o,i)=>`<label class="chip" style="margin:0"><input type="${multi?'checkbox':'radio'}" name="${id}" data-q="${q.id}" data-multi="${multi?1:''}" value="${esc(o)}" ${(multi?Array.isArray(cur)&&cur.includes(o):cur===o)?'checked':''}><span>${esc(o)}</span></label>`).join('')}</div></div>`}
+ function popText(){
+  const lines=['POP DA CASA — '+(aval(ans,'cliente')||'(cliente)'),'Preenchido pela cliente em '+new Date().toLocaleDateString('pt-BR'),''];
+  POP.forEach(([t,ids])=>{const p=ids.map(id=>{const v=aval(ans,id);return v?'• '+LABELS[id]+': '+flat(v):null}).filter(Boolean);lines.push('*'+t.toUpperCase()+'*');lines.push(p.length?p.join('\n'):'• (sem resposta)');lines.push('')});
+  const u=aval(ans,'q28');lines.push('*MAIS UMA MILHA DESTA CASA*');lines.push(u?'• '+LABELS.q28+': '+flat(u):'• (sem resposta)');
+  return lines.join('\n').trim()}
+ function draw(){
+  const m=$('#screen');const pct=step===0?0:Math.round(Math.min(step,N)/N*100);
+  let h=step>0&&step<=N?`<div class="progress"><i style="width:${pct}%"></i></div><div class="steplabel">Etapa ${step} de ${N} · ${esc(BLOCKS[step-1].title)}</div>`:'';
+  if(step===0){h+=`<div class="card">${ART(true)}<p class="welcome">Olá! Eu sou ${esc(pro.name)}. Antes da nossa primeira limpeza, quero conhecer a sua casa e o jeito que você gosta das coisas.</p><p class="muted">Assim eu já chego sabendo o que é prioridade, o que exige cuidado e o que não deve ser mexido. Leva uns 10 minutos. Só o seu nome é obrigatório.</p><div class="tip">Suas respostas ficam só neste aparelho até você tocar em Enviar. Elas vão direto para o meu WhatsApp.</div><button class="full" data-c="next">Começar</button></div>`}
+  else if(step<=N){const b=BLOCKS[step-1];h+=`<div class="card"><h2>${esc(b.title)}</h2>${b.note?`<p class="muted small">${esc(b.note)}</p>`:''}${b.qs.map(field).join('')}<p id="err" class="small" style="color:var(--bad)" role="alert"></p><div class="grid2"><button class="white" data-c="back">Voltar</button><button data-c="next">${step===N?'Revisar':'Continuar'}</button></div></div>`}
+  else{const t=popText();
+   const photos=ans.q13f==='Sim, vou mandar no WhatsApp';
+   h+=`<div class="card"><h2>Pronto! Confira e envie</h2><p class="muted small">É assim que eu vou receber as suas preferências.</p><pre class="box">${esc(t)}</pre><a class="btn full" href="${esc(waLink(pro.phone,t))}" target="_blank" rel="noopener">Enviar pelo WhatsApp</a><button class="white full" data-c="back">Voltar e mudar algo</button>
+   <div class="tip"><b>${photos?'Depois de enviar, mande as fotos':'Tem fotos de algum dano?'}</b><br>Na mesma conversa do WhatsApp: toque no clipe 📎 (ou no + no iPhone), escolha as fotos e escreva onde fica cada dano.</div></div>`}
+  m.innerHTML=h;scrollTo(0,0)}
+ document.addEventListener('input',e=>{const q=e.target.dataset&&e.target.dataset.q;if(!q)return;if(e.target.type==='checkbox'){const s=new Set(Array.isArray(ans[q])?ans[q]:[]);e.target.checked?s.add(e.target.value):s.delete(e.target.value);ans[q]=[...s]}else ans[q]=e.target.value;sv()});
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;if(b.dataset.c==='next'){if(step===1&&!aval(ans,'cliente')){$('#err').textContent='Escreva seu nome para continuar.';$('#f-cliente').focus();return}step++}else step--;draw()});
+ draw()}
+
+/* ================= APP DA PROFISSIONAL ================= */
+const DEMO=H==='demo-plus'?'Plus':H==='demo-basico'?'Básico':null;
+const KEY=DEMO?'mf-demo-'+DEMO:'minhafaxina-v1';
+const LIMIT_BASICO=3;
+const TRIAL_END='2026-11-25';
+const daysLeft=()=>Math.round((parse(TRIAL_END)-parse(today()))/864e5);
+const LOCKED=()=>!DEMO&&today()>TRIAL_END&&!S.unlocked;
+const DEF_TPL={
+ boas:"Olá, {cliente}! Aqui é {profissional}. Antes da nossa primeira limpeza, quero conhecer sua casa e o jeito que você gosta das coisas. Leva uns 10 minutinhos: {link}\nObrigada!",
+ confirma:"Oi, {cliente}! Passando para confirmar nossa faxina amanhã ({quando}). Até lá! {profissional}",
+ problema:"Oi, {cliente}! Durante a limpeza encontrei: ______. Não mexi em nada além do necessário. Quer que eu faça algo? {profissional}",
+ relatorio:"Oi, {cliente}! Faxina de hoje concluída ✨\n• Feito: ______\n• Atenção: ______\n• Mais uma Milha de hoje: ______\nQualquer coisa me avise. {profissional}",
+ cobranca:"Oi, {cliente}! Segue o resumo de {mes}: {feitas} faxina(s) feita(s). Valor: {valor}. Pode ser por Pix ou dinheiro. Obrigada! {profissional}",
+ politica:"Combinados de agenda 💚\n• Cancelando com 24h de antecedência, eu reponho a faxina em outro dia.\n• Cancelamento no mesmo dia conta como faxina feita.\n• Se eu precisar faltar, aviso o quanto antes e reponho sem custo.\n{profissional}"};
+const CAD_MSG="Oi! Para eu te cadastrar, copie esta mensagem, complete depois dos dois pontos e me mande de volta 😊\n\nNome: \nWhatsApp: \nEndereço: \nBairro: \nDias da semana: \nPeríodo (manhã, tarde, noite ou dia todo): \nFrequência (toda semana, a cada 15 dias ou 1x por mês): ";
+const TPL_NAMES={boas:'Boas-vindas e preferências',confirma:'Confirmar faxina de amanhã',problema:'Encontrei um problema',relatorio:'Relatório da visita',cobranca:'Cobrança do mês',politica:'Combinados de agenda (cancelamento)'};
+const initial=()=>({name:'Minha Faxina',color:'#2c6e57',logo:'',cover:'',plan:'Plus',selo:false,pro:{name:'',phone:''},
+ services:[{id:'completa',name:'Faxina completa',price:180},{id:'leve',name:'Faxina leve / manutenção',price:140},{id:'pesada',name:'Faxina pesada / pós-obra',price:300},{id:'roupa',name:'Passar roupa',price:80}],
+ packs:[{id:'p1',name:'Quinzenal',visits:2,price:0},{id:'p2',name:'Semanal',visits:4,price:0},{id:'p3',name:'2x por semana',visits:8,price:0},{id:'p4',name:'3x por semana',visits:13,price:0},{id:'p5',name:'Combo faxina + passar roupa',visits:4,price:0},{id:'p6',name:'Avulsa / faxina pesada',visits:1,price:0}],
+ houses:[],ov:{},extras:[],payments:[],tpl:{},lastBackup:''});
+function demo(plan){const d=initial();d.plan=plan;d.pro={name:'Maria',phone:'47999998888'};const t=today();const wd=parse(t).getDay();const mon=addDays(t,-((wd+6)%7));const m=ymOf(t);
+ const h=(id,cliente,bairro,cob,preco,mensal,pack,days,freq)=>({id,cliente,phone:'47999990000',end:'Rua Exemplo, 100',bairro,cob,preco,mensal,pack,service:'completa',sched:[{from:addDays(mon,-28),freq:freq||'semanal',days}],prefs:{},milha:'',notes:'Dados de exemplo',check:{}});
+ d.houses=[h('h1','Ana Souza','Centro','mensal',150,1800,'3x por semana',{1:'M',3:'M',5:'M'}),h('h2','Carla Lima','Rio Negro','visita',180,0,'',{2:'D'}),h('h3','Paulo Reis','Mato Preto','mensal',0,560,'Quinzenal',{4:'T'},'quinzenal'),h('h4','Juliana Alves','Centenário','visita',140,0,'',{2:'T',5:'T'})];
+ d.houses[0].prefs={cliente:'Ana Souza',q1b:'Casa',q2:'3 quartos, 2 banheiros',q3:'Casal e um bebê. Sem cheiro forte.',q4:'Gato, fica na lavanderia',q6:['Banheiros','Cozinha','Quartos'],q7:'Escrivaninha do escritório',q8:'Box do banheiro',q9a:'Banheiros, cozinha, aspirar a casa toda',q9b:['Vidros','Geladeira por dentro'],q11:['Granito','Inox'],q14:'Use os da casa',q15:'Sem cloro',q22:'Lavar tudo da pia',q25:['Texto no WhatsApp','Fotos'],q28:'Chegar e ver a cama arrumada com as almofadas no lugar.'};
+ d.houses.slice(1).forEach(x=>x.prefs={});
+ if(plan==='Básico')d.houses=d.houses.slice(0,3);
+ const pv=addDays(mon,0);d.ov['h1|'+pv]={st:'feita'};d.ov['h1|'+addDays(mon,2)]={st:'cancel-repor'};
+ d.payments.push({id:'pg1',house:'h1',month:m,value:900,date:t,method:'Pix'});return d}
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||(DEMO?demo(DEMO):initial())}catch(e){S=DEMO?demo(DEMO):initial()}
+if(DEMO)S.plan=DEMO;
+['ov','extras','payments','houses','tpl'].forEach(k=>{if(!S[k])S[k]=k==='ov'||k==='tpl'?{}:[]});
+let storageOk=true;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));storageOk=true}catch(e){storageOk=false;$('#storageWarn').hidden=false}}
+const PLUS=()=>S.plan==='Plus';
+let finFilter='todas';let page='home',param=null,agDate=today(),finMonth=ymOf(today()),formStep=null;
+
+function feedback(t,err){const f=$('#feedback');f.textContent=t;f.className=err?'erro':'';f.style.display='block';clearTimeout(feedback.t);feedback.t=setTimeout(()=>f.style.display='none',2600)}
+function go(p,x){page=p;param=x==null?null:x;closeModal();render();scrollTo(0,0)}
+function openModal(h){$('#sheet').innerHTML=h;$('#modal').hidden=false;const f=$('#sheet').querySelector('input,select,textarea,button');if(f)f.focus()}
+function closeModal(){$('#modal').hidden=true;$('#sheet').innerHTML=''}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden)closeModal()});
+const lockBox=(title,txt)=>`<div class="lock"><div class="lk" aria-hidden="true">🔒</div><b>${esc(title)}</b><p class="small muted">${esc(txt)}</p><span class="tag">Disponível no plano Plus · alunas do curso</span></div>`;
+const house=id=>S.houses.find(h=>h.id===id);
+const svc=id=>S.services.find(s=>s.id===id);
+
+/* ---------- agenda: visitas fixas + extras ---------- */
+function schedFor(h,date){let s=null;(h.sched||[]).forEach(x=>{if(x.from<=date)s=x});return s}
+function plannedFor(h,date){const s=schedFor(h,date);if(!s)return null;const d=parse(date);const p=s.days&&s.days[d.getDay()];if(!p)return null;
+ if(s.freq==='quinzenal'){const a=parse(s.from);a.setDate(a.getDate()-a.getDay());const b=new Date(d);b.setDate(b.getDate()-b.getDay());const w=Math.round((b-a)/(7*864e5));if(w%2)return null}if(s.freq==='mensal'&&Math.ceil(d.getDate()/7)!==(s.wk||1))return null;return p}
+const ORD={M:0,D:1,T:2,N:3};
+function visitsOn(date){const out=[];S.houses.forEach(h=>{const p=plannedFor(h,date);if(p){const id=h.id+'|'+date;const o=S.ov[id]||{};out.push({id,house:h.id,date,per:p,kind:'fixa',st:o.st||'',to:o.to,rep:o.rep})}});
+ S.extras.filter(e=>e.date===date).forEach(e=>out.push({id:e.id,house:e.house,date:e.date,per:e.per,kind:e.kind,st:e.st||'',extra:true,from:e.from}));
+ return out.filter(v=>house(v.house)).sort((a,b)=>ORD[a.per]-ORD[b.per]||house(a.house).cliente.localeCompare(house(b.house).cliente))}
+function monthStats(h,ym){const[y,m]=ym.split('-').map(Number);const last=new Date(y,m,0).getDate();const t=today();const r={total:0,feitas:0,cancel:0,repor:0,rest:0,list:[]};
+ for(let d=1;d<=last;d++){const ds=ym+'-'+pad(d);const p=plannedFor(h,ds);if(!p)continue;const o=S.ov[h.id+'|'+ds]||{};if(o.st==='tirado')continue;
+  r.total++;let k='next';
+  if(o.st==='feita'){r.feitas++;k='done'}else if(o.st==='cancel'){r.cancel++;k='bad'}else if(o.st==='cancel-repor'||o.st==='faltei'){if(!o.rep)r.repor++;k=o.rep?'moved':'rep'}else if(o.st==='remarcada'){k='moved'}else if(ds>=t){r.rest++}else k='past';
+  r.list.push({ds,k})}
+ S.extras.filter(e=>e.house===h.id&&ymOf(e.date)===ym).forEach(e=>{if(e.kind==='avulsa')r.total++;
+  if(e.st==='feita'){r.feitas++;r.list.push({ds:e.date,k:'done'})}else if(e.st==='cancel'){r.cancel++;r.list.push({ds:e.date,k:'bad'})}else{if(e.date>=t)r.rest++;r.list.push({ds:e.date,k:e.date>=t?'next':'past'})}});
+ r.list.sort((a,b)=>a.ds<b.ds?-1:1);
+ r.devido=h.cob==='mensal'?num(h.mensal):r.feitas*num(h.preco);
+ r.pago=S.payments.filter(p=>p.house===h.id&&p.month===ym).reduce((s,p)=>s+num(p.value),0);
+ return r}
+function daysText(h){const s=schedFor(h,today())||(h.sched||[]).slice(-1)[0];if(!s||!s.days)return 'Sem dias fixos';const ks=Object.keys(s.days).filter(k=>s.days[k]).map(Number).sort((a,b)=>((a+6)%7)-((b+6)%7));if(!ks.length)return 'Sem dias fixos';
+ const pers=[...new Set(ks.map(k=>s.days[k]))];return ks.map(k=>DOW[k]).join(' · ')+(pers.length===1?' — '+PER[pers[0]].toLowerCase():' ('+ks.map(k=>PER[s.days[k]].toLowerCase()).join(', ')+')')+(s.freq==='quinzenal'?' · a cada 15 dias':s.freq==='mensal'?' · 1x por mês ('+(s.wk||1)+'ª semana)':'')}
+
+/* ---------- cartões de visita ---------- */
+const ST={feita:['Feita ✓','ok'],cancel:['Cliente cancelou','grey'],'cancel-repor':['Cancelou · repor','warn'],faltei:['Faltei · repor','warn'],remarcada:['Remarcada','grey'],tirado:['Tirada da agenda','grey']};
+function visitCard(v){const h=house(v.house);const cls=v.st==='feita'?'done':(v.st==='cancel'||v.st==='remarcada'||v.st==='tirado')?'off':(v.st==='cancel-repor'||v.st==='faltei')?'rep':'';
+ const kindTag=v.kind==='remarcada'?'<span class="tag">Remarcada</span>':v.kind==='reposicao'?'<span class="tag">Reposição</span>':v.kind==='avulsa'?'<span class="tag">Avulsa</span>':'';
+ const st=ST[v.st];let acts='';
+ if(!v.st){acts=`<div class="actions"><button data-a="feita" data-v="${v.id}">✓ Feita</button><button class="light" data-a="remarcar" data-v="${v.id}">↔ Remarcar</button><button class="light" data-a="cancelou" data-v="${v.id}">✗ Cliente cancelou</button>${v.extra?`<button class="light" data-a="tirar" data-v="${v.id}">🗑 Tirar este dia</button>`:`<button class="light" data-a="faltei" data-v="${v.id}">✗ Eu faltei</button><button class="light wide" data-a="tirar" data-v="${v.id}">🗑 Tirar este dia</button>`}</div>`}
+ else{acts=`<div class="actions">${(v.st==='cancel-repor'||v.st==='faltei')&&!v.rep?`<button data-a="repor" data-v="${v.id}">📅 Agendar reposição</button>`:''}<button class="white ${(v.st==='cancel-repor'||v.st==='faltei')&&!v.rep?'':'wide'}" data-a="desfazer" data-v="${v.id}">↩ Desfazer</button></div>`}
+ const extra=`<div class="actions" style="grid-template-columns:1fr 1fr"><button class="white mini" data-a="ficha" data-h="${h.id}">🏠 Ver casa</button>${PLUS()?`<button class="white mini" data-a="msg" data-h="${h.id}" data-d="${v.date}">💬 Mensagem</button>`:`<button class="white mini" data-a="lockinfo">🔒 Mensagens</button>`}</div>`;
+ return `<div class="visit ${cls}"><div class="vTop"><div><strong>${esc(h.cliente)}</strong><div class="small muted">${esc(PER[v.per])}${h.bairro?' · '+esc(h.bairro):''}</div>${kindTag}${st?`<span class="tag ${st[1]}">${st[0]}</span>`:''}${v.st==='remarcada'&&v.to?`<div class="small muted">para ${esc(fmtD(v.to.date))}, ${esc(PER[v.to.per].toLowerCase())}</div>`:''}${v.rep?'<div class="small muted">Reposição já agendada</div>':''}</div></div>${acts}${extra}</div>`}
+
+/* ---------- telas ---------- */
+const views={
+home(){const t=today();const vs=visitsOn(t);const tm=visitsOn(addDays(t,1)).filter(v=>!v.st);
+ const hr=new Date().getHours();const hi=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';
+ return `<p class="welcome">${hi}${S.pro.name?', '+esc(S.pro.name.split(' ')[0]):''}! Vamos deixar as casas em ordem e brilhando! ✨</p>
+ ${S.cover?`<img class="cover" src="${S.cover}" alt="Foto de capa">`:ART(true)}
+ <div class="shortcuts"><button data-a="go" data-p="houseForm"><span class="scIcon">🏠</span>Nova<br>casa</button><button data-a="go" data-p="agenda"><span class="scIcon">📅</span>Agenda</button><button data-a="go" data-p="link"><span class="scIcon">📝</span>Pedir<br>preferências</button><button data-a="go" data-p="fin"><span class="scIcon">💰</span>Receber</button></div>
+ <div class="card"><h3>Hoje · ${esc(fmtD(t))}</h3>${vs.length?vs.map(visitCard).join(''):'<p class="muted small">Nenhuma faxina hoje.</p>'}</div>
+ <div class="card"><h3>Amanhã</h3>${tm.length?tm.map(v=>`<p style="margin:4px 0">• <b>${esc(house(v.house).cliente)}</b> <span class="muted small">— ${esc(PER[v.per].toLowerCase())}</span></p>`).join(''):'<p class="muted small">Nada marcado.</p>'}<button class="light full" data-a="go" data-p="agenda" data-x="${addDays(t,1)}">Ver agenda</button></div>
+ ${!S.houses.length?`<div class="tip"><b>Comece por aqui:</b><br>1. Toque em <b>Nova casa</b> e marque os dias fixos.<br>2. Em <b>Pedir preferências</b>, crie seu link e mande para a cliente.<br>3. Quando a resposta chegar no WhatsApp, cole na ficha da casa.</div>`:''}`},
+
+houses(){const ym=ymOf(today());const can=PLUS()||S.houses.length<LIMIT_BASICO;
+ return `<h2>Casas</h2><p class="muted small">Suas clientes e as preferências de cada casa.</p>
+ ${S.houses.map(h=>{const r=monthStats(h,ym);return `<div class="card"><button class="houseRow" data-a="ficha" data-h="${h.id}"><span class="avatar">${esc((h.cliente||'?')[0].toUpperCase())}</span><span style="flex:1;min-width:0"><strong>${esc(h.cliente)}</strong><span class="small muted">${esc(daysText(h))}</span><br>${r.total?`<span class="tag">${r.feitas} de ${r.total} no mês</span>`:''}${r.repor?`<span class="tag warn">${r.repor} para repor</span>`:''}${Object.keys(h.prefs||{}).length?'<span class="tag ok">Preferências ✓</span>':'<span class="tag grey">Sem preferências</span>'}</span><span class="chev">›</span></button></div>`}).join('')}
+ ${can?`<button class="full" data-a="go" data-p="houseForm">＋ Nova casa</button>`:lockBox('Casas ilimitadas','No plano Básico você cadastra até '+LIMIT_BASICO+' casas.')}`},
+
+ficha(){const h=house(param);if(!h)return views.houses();const ym=ymOf(today());const r=monthStats(h,ym);const sv=svc(h.service);
+ const dots=r.list.map(x=>`<i class="${x.k==='done'?'done':x.k==='bad'?'bad':x.k==='rep'?'rep':x.k==='next'?'next':''}" title="${esc(fmtD(x.ds))}">${x.k==='done'?'✓':x.k==='bad'?'✗':x.k==='rep'?'↺':x.k==='moved'?'↔':esc(fmtShort(x.ds).slice(0,2))}</i>`).join('');
+ const hasPrefs=Object.keys(h.prefs||{}).length||h.prefsText;
+ const popHtml=h.prefsText&&!Object.keys(h.prefs||{}).length?`<pre class="box">${esc(h.prefsText)}</pre>`:POP.map(([t,ids])=>{const p=ids.map(id=>{const v=aval(h.prefs,id);return v?`<p><b>${esc(LABELS[id])}</b><br>${esc(v)}</p>`:''}).join('');return p?`<details class="pop"><summary>${esc(t)}</summary>${p}</details>`:''}).join('');
+ return `<button class="white mini" data-a="go" data-p="houses">‹ Casas</button>
+ <div class="card"><div class="row" style="flex-wrap:nowrap"><span class="avatar" style="flex:0 0 auto">${esc((h.cliente||'?')[0].toUpperCase())}</span><div style="flex:1"><h2 style="margin:0">${esc(h.cliente)}</h2><div class="small muted">${esc([h.end,h.bairro].filter(Boolean).join(' · '))}</div></div></div>
+ <p class="small" style="margin:10px 0 4px">📅 <b>${esc(daysText(h))}</b></p>
+ <p class="small" style="margin:0">💰 ${h.cob==='mensal'?'Pacote mensal'+(h.pack?' ('+esc(h.pack)+')':'')+': <b>'+money(h.mensal)+'</b>':'Por visita'+(sv?' ('+esc(sv.name)+')':'')+': <b>'+money(h.preco)+'</b>'}</p>
+ <div class="grid2" style="margin-top:12px">${h.phone?`<a class="btn light" href="${esc(waLink(h.phone))}" target="_blank" rel="noopener">WhatsApp</a>`:'<span></span>'}<button class="light" data-a="go" data-p="houseForm" data-x="${h.id}">✏️ Editar / mudar dias</button></div></div>
+
+ <div class="card"><h3>Este mês · ${esc(monthName(ym))}</h3><div class="dots">${dots||'<span class="muted small">Sem visitas no mês.</span>'}</div>
+ <div class="stats"><div><b>${r.feitas}</b><small>feitas</small></div><div><b>${r.cancel}</b><small>canceladas</small></div><div><b>${r.repor}</b><small>para repor</small></div><div><b>${r.rest}</b><small>restantes</small></div></div>
+ <div class="money"><span>Valor do mês</span><b>${money(r.devido)}</b></div><div class="money"><span>Recebido</span><b>${money(r.pago)}</b></div>${r.devido>r.pago?`<div class="money"><span>Falta</span><b style="color:var(--bad)">${money(r.devido-r.pago)}</b></div>`:''}
+ <div class="grid2" style="margin-top:8px"><button class="light" data-a="pagar" data-h="${h.id}" data-m="${ym}">Registrar pagamento</button><button class="light" data-a="avulsa" data-h="${h.id}">＋ Faxina extra</button></div></div>
+
+ ${welcomeCard(h)}
+ <div class="card"><h3>Preferências da casa</h3>${hasPrefs?`${h.prefsDate?`<p class="small muted">Respondido em ${esc(h.prefsDate)}</p>`:''}${popHtml}<button class="light full" data-a="colar" data-h="${h.id}">Atualizar com novas respostas</button>`:`<p class="small muted">A cliente ainda não respondeu.</p><p class="small"><b>1.</b> Mande o formulário para ela:</p>${h.phone&&S.pro.phone?`<a class="btn full" href="${esc(waLink(h.phone,fillTpl('boas',h)))}" target="_blank" rel="noopener">Mandar formulário no WhatsApp</a>`:`<button class="full" data-a="go" data-p="link">Criar meu link primeiro</button>`}<p class="small"><b>2.</b> Quando ela responder, copie a mensagem inteira e cole aqui:</p><button class="light full" data-a="colar" data-h="${h.id}">Colar respostas da cliente</button>`}</div>
+
+ ${PLUS()?`<div class="card"><h3>✨ Mais uma Milha desta casa</h3><p class="small muted">O detalhe que faz essa cliente dizer "uau".</p>${aval(h.prefs,'q28')?`<div class="tip"><b>Ela disse:</b> ${esc(aval(h.prefs,'q28'))}</div>`:''}<label>Minha ideia de Mais uma Milha para esta casa<textarea data-hf="milha" data-h="${h.id}">${esc(h.milha||'')}</textarea></label></div>
+ <div class="card"><h3>✅ Checklist da visita</h3><p class="small muted">Montado a partir das preferências. Marque durante a faxina.</p>${checklist(h)}<button class="white full" data-a="checkReset" data-h="${h.id}">Começar nova visita (desmarcar tudo)</button></div>`
+ :lockBox('Mais uma Milha desta casa','O detalhe que encanta a cliente, tirado das respostas dela.')+lockBox('Checklist da visita','Lista pronta de cada casa, montada com as preferências da cliente.')}
+
+ <div class="card"><h3>Anotações</h3><textarea data-hf="notes" data-h="${h.id}" aria-label="Anotações da casa">${esc(h.notes||'')}</textarea><p class="small muted">Salva sozinho. Não anote senhas nem código de alarme.</p></div>
+ <button class="danger full" data-a="delHouse" data-h="${h.id}">Excluir esta casa</button>`},
+
+houseForm(){const h=param?house(param):null;const s=h?(schedFor(h,today())||(h.sched||[]).slice(-1)[0]||{days:{}}):{days:{},freq:'semanal'};
+ if(!h&&!PLUS()&&S.houses.length>=LIMIT_BASICO)return `<h2>Nova casa</h2>${lockBox('Casas ilimitadas','No plano Básico você cadastra até '+LIMIT_BASICO+' casas.')}`;
+ const order=[1,2,3,4,5,6,0];
+ return `<button class="white mini" data-a="${h?'ficha':'go'}" ${h?`data-h="${h.id}"`:'data-p="houses"'}>‹ Voltar</button><h2>${h?'Editar casa':'Nova casa'}</h2>
+ <div class="card"><h3>⚡ Cadastro rápido pelo WhatsApp</h3><p class="small muted">A cliente responde no WhatsApp e você só cola. Nada de digitar.</p><button class="light full" data-a="copy" data-t="cad">1. Copiar mensagem para a cliente</button><button class="full" data-a="cadPaste">2. Colar a resposta dela</button></div>
+ <form data-f="house" data-h="${h?h.id:''}">
+ <div class="card"><h3>1. Cliente</h3><label>Nome da cliente *<input name="cliente" required value="${esc(h?h.cliente:'')}"></label><label>WhatsApp com DDD<input name="phone" inputmode="tel" value="${esc(h?h.phone:'')}" placeholder="47 99999-8888"></label><label>Endereço<input name="end" value="${esc(h?h.end:'')}"></label><label>Bairro<input name="bairro" value="${esc(h?h.bairro:'')}"></label></div>
+ <div class="card"><h3>2. Dias fixos</h3><p class="small muted">Ao lado de cada dia, toque no período que ela vem. Toque de novo para desmarcar.</p>
+ <div class="dayRows">${order.map(d=>`<div class="dayRow" role="group" aria-label="${DOWL[d]}"><b>${DOW[d]}</b>${['M','T','N','D'].map(p=>`<label class="pchip"><input type="checkbox" name="d${d}" value="${p}" data-one="1" ${s.days&&s.days[d]===p?'checked':''} aria-label="${DOWL[d]} ${PER[p]}"><span>${PER[p]}</span></label>`).join('')}</div>`).join('')}</div>
+ <label>Frequência<select name="freq"><option value="semanal" ${!s.freq||s.freq==='semanal'?'selected':''}>Toda semana</option><option value="quinzenal" ${s.freq==='quinzenal'?'selected':''}>A cada 15 dias</option><option value="mensal" ${s.freq==='mensal'?'selected':''}>1x por mês</option></select></label>
+ <label>Se for 1x por mês, em qual semana?<select name="wk">${[1,2,3,4].map(n=>`<option value="${n}" ${(s.wk||1)===n?'selected':''}>${n}ª semana do mês</option>`).join('')}</select></label>
+ ${h?`<label>Valendo a partir de <small>(o que já passou não muda)</small><input type="date" name="from" value="${today()}"></label>`:`<label>Começa em<input type="date" name="from" value="${today()}"></label>`}</div>
+ <div class="card"><h3>3. Como cobra</h3>
+ <div class="chips" role="radiogroup" aria-label="Forma de cobrança"><label class="chip" style="margin:0"><input type="radio" name="cob" value="visita" ${!h||h.cob!=='mensal'?'checked':''}><span>Por visita</span></label><label class="chip" style="margin:0"><input type="radio" name="cob" value="mensal" ${h&&h.cob==='mensal'?'checked':''}><span>Pacote mensal</span></label></div>
+ <label>Serviço<select name="service">${S.services.map(x=>`<option value="${x.id}" ${h&&h.service===x.id?'selected':''}>${esc(x.name)} — ${money(x.price)}</option>`).join('')}</select></label>
+ <label>Valor por visita<input name="preco" inputmode="decimal" value="${esc(h?h.preco:(S.services[0]||{}).price||'')}"></label>
+ <label>Pacote <small>(se cobra por mês)</small><select name="pack"><option value="">—</option>${S.packs.map(p=>`<option ${h&&h.pack===p.name?'selected':''} value="${esc(p.name)}">${esc(p.name)} · ${p.visits} visita(s)${num(p.price)?' · '+money(p.price):''}</option>`).join('')}</select></label>
+ <label>Valor mensal do pacote<input name="mensal" inputmode="decimal" value="${esc(h&&h.mensal?h.mensal:'')}"></label><div id="calcBox" class="tip" aria-live="polite"></div></div>
+ <button class="full">✓ Salvar casa</button></form>`},
+
+agenda(){const d=agDate;const wd=parse(d).getDay();const mon=addDays(d,-((wd+6)%7));const vs=visitsOn(d);
+ const per=k=>vs.filter(v=>k==='M'?(v.per==='M'||v.per==='D'):v.per===k);
+ return `<h2>Agenda</h2><div class="card"><div class="dayNav"><button class="white mini" data-a="ag" data-x="${addDays(d,-1)}" aria-label="Dia anterior">‹</button><div><b>${esc(fmtD(d))}</b>${d!==today()?`<br><button class="light mini" data-a="ag" data-x="${today()}">Voltar para hoje</button>`:''}</div><button class="white mini" data-a="ag" data-x="${addDays(d,1)}" aria-label="Próximo dia">›</button></div>
+ <div class="week">${[0,1,2,3,4,5,6].map(i=>{const x=addDays(mon,i);const n=visitsOn(x).filter(v=>!['cancel','remarcada','tirado'].includes(v.st)).length;return `<button class="${x===d?'on':''}" data-a="ag" data-x="${x}">${DOW[parse(x).getDay()]}<i>${parse(x).getDate()}</i><em>${n?n+' 🧹':'·'}</em></button>`}).join('')}</div>
+ <div class="period"><div class="periodHead">☀️ Manhã <span class="small muted">${per('M').length}</span></div>${per('M').map(visitCard).join('')||'<p class="small muted center">Livre</p>'}</div>
+ <div class="period"><div class="periodHead">🌤 Tarde <span class="small muted">${per('T').length}</span></div>${per('T').map(visitCard).join('')||'<p class="small muted center">Livre</p>'}</div>
+ <div class="period"><div class="periodHead">🌙 Noite <span class="small muted">${per('N').length}</span></div>${per('N').map(visitCard).join('')||'<p class="small muted center">Livre</p>'}</div>
+ <button class="light full" data-a="avulsa" data-d="${d}">＋ Faxina extra / avulsa neste dia</button></div>`},
+
+fin(){const ym=finMonth;let dev=0,pag=0,feitas=0,canc=0;const rows=S.houses.map(h=>{const r=monthStats(h,ym);dev+=r.devido;pag+=r.pago;feitas+=r.feitas;canc+=r.cancel;return {h,r}});
+ return `<h2>${PLUS()?'Financeiro':'Recebidos'}</h2><div class="card"><div class="dayNav"><button class="white mini" data-a="fm" data-x="${addMonth(ym,-1)}" aria-label="Mês anterior">‹</button><b>${esc(cap(monthName(ym)))}</b><button class="white mini" data-a="fm" data-x="${addMonth(ym,1)}" aria-label="Próximo mês">›</button></div></div>
+ ${PLUS()?`<div class="card"><h3>📊 Relatório do mês</h3><div class="stats"><button class="statBtn ${finFilter==='recebidos'?'on':''}" data-a="ff" data-x="recebidos"><b style="font-size:15px">${money(pag)}</b><small>recebido ›</small></button><button class="statBtn ${finFilter==='abertos'?'on':''}" data-a="ff" data-x="abertos"><b style="font-size:15px">${money(Math.max(0,dev-pag))}</b><small>a receber ›</small></button><div><b>${feitas}</b><small>faxinas feitas</small></div><div><b>${canc}</b><small>canceladas</small></div></div></div>`:lockBox('Relatório do mês','Quanto entrou, quanto falta e quantas faxinas foram feitas.')}
+ <div class="filterBar" role="group" aria-label="Mostrar">${[['todas','Todas'],['abertos','A receber'],['recebidos','Recebidos']].map(([k,l])=>`<button class="${finFilter===k?'on':''}" data-a="ff" data-x="${k}" aria-pressed="${finFilter===k}">${l}</button>`).join('')}</div>
+ ${(()=>{const fr=rows.filter(({r})=>finFilter==='abertos'?r.devido>r.pago:finFilter==='recebidos'?r.pago>0:true);return fr.length?'':`<p class="muted center">${finFilter==='abertos'?'Ninguém em aberto neste mês 🎉':finFilter==='recebidos'?'Nenhum pagamento registrado neste mês.':''}</p>`})()}
+ ${rows.length?rows.filter(({r})=>finFilter==='abertos'?r.devido>r.pago:finFilter==='recebidos'?r.pago>0:true).map(({h,r})=>`<div class="card"><div class="row"><b style="flex:1">${esc(h.cliente)}</b><span class="tag ${r.devido&&r.pago>=r.devido?'ok':r.pago?'warn':'grey'}">${r.devido&&r.pago>=r.devido?'Pago':r.pago?'Parcial':'Em aberto'}</span></div>
+  <p class="small muted" style="margin:4px 0">${h.cob==='mensal'?'Pacote mensal':r.feitas+' faxina(s) × '+money(h.preco)}</p>
+  <div class="money"><span>Valor</span><b>${money(r.devido)}</b></div><div class="money"><span>Recebido</span><b>${money(r.pago)}</b></div>
+  <div class="grid2" style="margin-top:8px"><button class="light" data-a="pagar" data-h="${h.id}" data-m="${ym}">Registrar pagamento</button>${PLUS()?(h.phone?`<a class="btn light" href="${esc(waLink(h.phone,fillTpl('cobranca',h,{mes:monthName(ym),feitas:r.feitas,valor:money(Math.max(0,r.devido-r.pago))})))}" target="_blank" rel="noopener">💬 Cobrar</a>`:'<span class="small muted">Sem WhatsApp</span>'):`<button class="white" data-a="lockinfo">🔒 Cobrar no WhatsApp</button>`}</div>
+  ${S.payments.filter(p=>p.house===h.id&&p.month===ym).map(p=>`<p class="small muted" style="margin:6px 0 0">• ${esc(fmtShort(p.date))} · ${esc(p.method)} · ${money(p.value)} <button class="white mini" data-a="delPay" data-x="${p.id}" aria-label="Apagar pagamento">✗</button></p>`).join('')}</div>`).join(''):'<p class="muted">Cadastre uma casa para ver os valores.</p>'}`},
+
+more(){const t=(p,ic,ti,de,lk)=>`<button class="menuTile" data-a="${lk?'lockinfo':'go'}" data-p="${p}"><span class="mIc">${ic}</span><span><b>${ti}${lk?' 🔒':''}</b><small>${de}</small></span><span class="chev">›</span></button>`;
+ return `<h2>Mais opções</h2><div class="menuList">${t('link','📝','Meu link de preferências','Formulário para a cliente responder')}${t('prices','🧾','Serviços, pacotes e preços','Faxina completa, pacotes do mês')}${t('tpls','💬','Modelos de mensagem','Boas-vindas, relatório, cobrança',!PLUS())}${t('policy','📋','Combinados de agenda','Regra de cancelamento para mandar à cliente',!PLUS())}${t('settings','🎨','Personalizar','Logo, foto, cor e nome')}${t('backup','💾','Cópia de segurança','Guardar seus dados')}</div>
+ <p class="center small muted" style="margin-top:18px">Plano <b>${esc(S.plan)}</b>${DEMO?' · demonstração':''}</p>`},
+
+link(){const p=S.pro;const ok=p.name&&String(p.phone).replace(/\D/g,'').length>=10;
+ return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Meu link de preferências</h2>
+ <div class="card"><p class="small muted">Preencha uma vez. A cliente abre o link, responde as perguntas e as respostas chegam no seu WhatsApp, já organizadas.</p>
+ <form data-f="pro"><label>Seu nome (como a cliente vai ver)<input name="name" value="${esc(p.name)}" required placeholder="Ex.: Maria Silva"></label><label>Seu WhatsApp com DDD<input name="phone" inputmode="tel" value="${esc(p.phone)}" required placeholder="47 99999-8888"></label><button class="full">Salvar e gerar meu link</button></form>
+ ${ok?`<div class="linkbox">${esc(myLink())}</div><button class="light full" data-a="copy" data-t="link">Copiar meu link</button><div class="tip"><b>Mensagem pronta para a cliente:</b><br>${esc(fillTpl('boas',{cliente:''}))}</div><button class="light full" data-a="copy" data-t="boas">Copiar mensagem</button>`:''}</div>
+ <div class="card"><h3>Quando a resposta chegar</h3><p class="small">1. No WhatsApp, segure a mensagem da cliente e toque em <b>Copiar</b>.<br>2. Aqui no app, abra a casa dela e toque em <b>Colar respostas da cliente</b>.<br>3. Pronto: as preferências ficam na ficha da casa.</p><button class="light full" data-a="colar" data-h="">Colar respostas e criar casa nova</button></div>`},
+
+prices(){return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Serviços, pacotes e preços</h2>
+ <div class="card"><h3>Serviços (valor por visita)</h3>${S.services.map(x=>`<form data-f="svc" data-x="${x.id}" class="row" style="align-items:end"><label style="flex:2">Nome<input name="name" value="${esc(x.name)}" required></label><label>Preço<input name="price" inputmode="decimal" value="${esc(x.price)}"></label><button class="mini" style="flex:0 0 auto;margin:12px 0" aria-label="Salvar ${esc(x.name)}">✓</button></form>`).join('')}
+ <form data-f="svcNew" class="row" style="align-items:end"><label style="flex:2">Novo serviço<input name="name" required></label><label>Preço<input name="price" inputmode="decimal"></label><button class="mini" style="flex:0 0 auto;margin:12px 0" aria-label="Adicionar serviço">＋</button></form></div>
+ <div class="card"><h3>Pacotes do mês</h3><p class="small muted">Defina o preço de cada pacote. Ele aparece na hora de cadastrar a casa.</p>${S.packs.map(x=>`<form data-f="pack" data-x="${x.id}"><div class="row" style="align-items:end"><label style="flex:2">Pacote<input name="name" value="${esc(x.name)}" required></label><label>Visitas/mês<input name="visits" inputmode="numeric" value="${esc(x.visits)}"></label></div><div class="row" style="align-items:end"><label>Preço do mês<input name="price" inputmode="decimal" value="${num(x.price)?esc(x.price):''}" placeholder="defina"></label><button class="mini" style="flex:0 0 auto;margin:12px 0">Salvar</button><button type="button" class="danger mini" style="flex:0 0 auto;margin:12px 0" data-a="delPack" data-x="${x.id}" aria-label="Apagar pacote">✗</button></div></form>`).join('<hr style="border:0;border-top:1px solid var(--line)">')}
+ <button class="light full" data-a="addPack">＋ Novo pacote</button></div>`},
+
+tpls(){if(!PLUS())return lockBox('Modelos de mensagem','Mensagens prontas para cada momento com a cliente.');
+ return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Modelos de mensagem</h2><p class="small muted">Edite do seu jeito. Palavras entre { } são trocadas sozinhas: {cliente}, {profissional}, {link}.</p>
+ ${Object.keys(DEF_TPL).filter(k=>k!=='politica').map(k=>`<div class="card"><h3>${esc(TPL_NAMES[k])}</h3><textarea data-tpl="${k}" aria-label="${esc(TPL_NAMES[k])}">${esc(S.tpl[k]||DEF_TPL[k])}</textarea><div class="grid2" style="margin-top:8px"><button data-a="sendTpl" data-x="${k}">📲 Mandar para cliente</button><button class="light" data-a="copy" data-t="${k}">Copiar</button></div><button class="white mini full" data-a="tplReset" data-x="${k}">Voltar ao original</button></div>`).join('')}`},
+
+policy(){if(!PLUS())return lockBox('Combinados de agenda','Regra de cancelamento pronta para mandar à cliente.');
+ return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Combinados de agenda</h2><div class="card"><p class="small muted">Mande para cada cliente no começo. Evita discussão quando alguém cancela.</p><textarea data-tpl="politica" style="min-height:170px" aria-label="Combinados de agenda">${esc(S.tpl.politica||DEF_TPL.politica)}</textarea><button class="light full" data-a="copy" data-t="politica">Copiar</button><button class="white full" data-a="tplReset" data-x="politica">Voltar ao original</button></div>`},
+
+settings(){const SW=[['#2c6e57','Verde'],['#5f8f4a','Verde-folha'],['#3f6e9e','Azul'],['#7a4b8c','Lilás'],['#c4517a','Rosa'],['#b0603f','Terracota'],['#8b5e3c','Marrom'],['#4a5560','Grafite']];
+ return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Personalizar</h2><p class="muted small">Toque para trocar. Salva sozinho.</p>
+ <div class="card"><h3>1. Logo</h3><div class="tileImg">${S.logo?`<img src="${S.logo}" alt="Logo atual">`:ART()}</div><label class="fileBtn">📷 ${S.logo?'Trocar logo':'Colocar logo'}<input id="logoFile" type="file" accept="image/*" hidden></label>${S.logo?`<button class="danger full" data-a="rmImg" data-x="logo">Tirar logo</button>`:''}</div>
+ <div class="card"><h3>2. Foto de capa <small class="muted">(aparece no Início)</small></h3><div class="tileImg">${S.cover?`<img src="${S.cover}" alt="Capa atual">`:ART()}</div><label class="fileBtn">📷 ${S.cover?'Trocar foto de capa':'Colocar foto de capa'}<input id="coverFile" type="file" accept="image/*" hidden></label>${S.cover?`<button class="danger full" data-a="rmImg" data-x="cover">Tirar foto de capa</button>`:''}</div>
+ <div class="card"><h3>3. Cor do aplicativo</h3><div class="swatches">${SW.map(([c,n])=>`<button class="sw ${S.color===c?'on':''}" style="background:${c}" data-a="color" data-x="${c}" aria-label="Cor ${n}">${S.color===c?'✓':''}<span>${n}</span></button>`).join('')}</div></div>
+ <form class="card" data-f="proName"><h3>4. Seu nome</h3><p class="small muted">Aparece no "Bom dia" e no formulário que a cliente recebe ("Olá! Eu sou…").</p><input name="pname" value="${esc(S.pro.name)}" maxlength="40" required aria-label="Seu nome" placeholder="Ex.: Estela"><button class="full" style="margin-top:10px">✓ Salvar meu nome</button></form>
+ <form class="card" data-f="name"><h3>5. Nome no topo</h3><input name="name" value="${esc(S.name)}" maxlength="40" required aria-label="Nome no topo"><button class="full" style="margin-top:10px">✓ Salvar nome</button></form>
+ ${PLUS()?`<div class="card"><h3>6. Selo de profissional formada</h3><label class="checkItem" style="border:0"><input type="checkbox" data-a="selo" ${S.selo?'checked':''}><span>Mostrar o selo "Profissional formada" no topo do app</span></label></div>`:lockBox('Selo de profissional formada','Exclusivo para alunas que concluíram o curso.')}
+ <p class="muted center small">Plano contratado: <b>${esc(S.plan)}</b>. Para mudar de plano, fale com o suporte.</p>`},
+
+backup(){return `<button class="white mini" data-a="go" data-p="more">‹ Voltar</button><h2>Cópia de segurança</h2>
+ <div class="card"><p class="small">Seus dados ficam <b>só neste celular</b>. Faça uma cópia toda semana e guarde no seu WhatsApp (mande para você mesma).</p>${S.lastBackup?`<p class="small muted">Última cópia: ${esc(S.lastBackup)}</p>`:'<p class="small" style="color:var(--bad)">Você ainda não fez nenhuma cópia.</p>'}
+ <button class="full" data-a="copy" data-t="backup">1. Copiar minha cópia</button><p class="small muted">2. Abra o WhatsApp, entre na conversa com você mesma e cole.</p></div>
+ <div class="card"><h3>Restaurar uma cópia</h3><p class="small muted">Use se trocar de celular ou se o app abrir vazio. Isso substitui tudo o que está aqui agora.</p><textarea id="restoreBox" placeholder="Cole aqui a cópia" aria-label="Cópia para restaurar"></textarea><button class="light full" data-a="restore">Restaurar</button></div>`}
+};
+
+function checklist(h){const a=h.prefs||{};const items=[];const add=(t,id)=>items.push({t,id});
+ (Array.isArray(a.q6)?a.q6:[]).forEach(x=>add('Prioridade: '+x,'p-'+x));
+ if(aval(a,'q8'))add('Caprichar em: '+aval(a,'q8'),'inc');
+ aval(a,'q9a').split(/[,\n;]+/).map(s=>s.trim()).filter(Boolean).forEach((x,i)=>add(x,'t'+i));
+ if(aval(a,'q7'))add('NÃO mexer: '+aval(a,'q7'),'nm');
+ if(aval(a,'q12'))add('Cuidado com: '+aval(a,'q12'),'fr');
+ if(aval(a,'q11'))add('Materiais especiais: '+aval(a,'q11'),'mat');
+ if(aval(a,'q15'))add('Produtos: '+aval(a,'q15'),'prod');
+ if(aval(a,'q22'))add('Louça: '+aval(a,'q22'),'lou');
+ if(aval(a,'q9b'))add('De vez em quando: '+aval(a,'q9b'),'per');
+ if(aval(a,'q28')||h.milha)add('Mais uma Milha: '+(h.milha||aval(a,'q28')),'milha');
+ add('Relatório para a cliente no fim','rel');
+ if(items.length<=1)return '<p class="small muted">Cole as preferências da cliente para montar o checklist.</p>';
+ const c=h.check||{};return items.map(x=>`<label class="checkItem ${c[x.id]?'done':''}"><input type="checkbox" data-a="chk" data-h="${h.id}" data-x="${esc(x.id)}" ${c[x.id]?'checked':''}><span>${esc(x.t)}</span></label>`).join('')}
+
+function welcomeCard(h){const txt=fillTpl('boas',h)+(PLUS()?'\n\n'+fillTpl('politica',h):'');
+ if(h.welcomed)return `<div class="card"><h3>👋 Primeira mensagem</h3><p class="small">✓ Enviada em ${esc(h.welcomed)}.</p><a class="btn light full" data-a="welcomed" data-h="${h.id}" href="${esc(waLink(h.phone,txt))}" target="_blank" rel="noopener">Mandar de novo</a></div>`;
+ return `<div class="card" style="border:2px solid var(--c)"><h3>👋 Primeira mensagem para a cliente</h3><p class="small muted">Vai num recado só: a apresentação, o link das preferências${PLUS()?' e os combinados de agenda (cancelamento com 24h)':''}.</p>${!h.phone?'<p class="small" style="color:var(--bad)">Coloque o WhatsApp da cliente em Editar.</p>':!S.pro.phone?`<button class="full" data-a="go" data-p="link">Criar meu link primeiro</button>`:`<a class="btn full" data-a="welcomed" data-h="${h.id}" href="${esc(waLink(h.phone,txt))}" target="_blank" rel="noopener">📲 Mandar primeira mensagem</a>`}</div>`}
+function myLink(){let d=String(S.pro.phone||'').replace(/\D/g,'');if(d.length===10||d.length===11)d='55'+d;const slug=String(S.pro.name||'').normalize('NFD').replace(/[̀-ͯ]/g,'').trim().replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40);return PAGE_URL+'#f-'+d+(slug?'-'+slug:'')}
+function fillTpl(k,h,extra){let t=S.tpl[k]||DEF_TPL[k];const m=Object.assign({cliente:(h&&h.cliente||'').split(' ')[0],profissional:S.pro.name||'',link:myLink()},extra||{});return t.replace(/\{(\w+)\}/g,(x,n)=>m[n]!=null?m[n]:x).replace(/Olá, !/,'Olá!').replace(/Oi, !/,'Oi!')}
+
+/* ---------- topo e menu ---------- */
+function render(){document.documentElement.style.setProperty('--c',S.color||'#2c6e57');document.querySelector('meta[name=theme-color]').setAttribute('content',S.color);
+ $('#notice').textContent=DEMO?'Demonstração com dados de exemplo · Plano '+DEMO:S.unlocked?'Salve sua cópia toda semana':LOCKED()?'Período de teste encerrado':'Teste gratuito até 25/11/2026 · '+(daysLeft()===0?'último dia':daysLeft()===1?'falta 1 dia':'faltam '+daysLeft()+' dias');
+ $('#header').innerHTML=`<div class="brandIcon">${S.logo?`<img src="${S.logo}" alt="Logo">`:ART()}</div><div><small>Faxina com cuidado</small><h1>${esc(S.name)}</h1><div class="badges"><button class="hbadge" id="planBadge" aria-label="Plano ${esc(S.plan)}">Plano ${esc(S.plan)}</button>${PLUS()&&S.selo?'<span class="hbadge">✓ Profissional formada</span>':''}</div></div>`;
+ const tabs=[['home','Início','🏡'],['houses','Casas','🏠'],['agenda','Agenda','📅'],['fin',PLUS()?'Financeiro':'Recebidos','💰'],['more','Mais','☰']];
+ const act=page==='ficha'||page==='houseForm'?'houses':['link','prices','tpls','policy','settings','backup'].includes(page)?'more':page;
+ $('#nav').innerHTML=tabs.map(([k,v,i])=>`<button class="${act===k?'active':''}" data-a="go" data-p="${k}" ${act===k?'aria-current="page"':''}><span class="navIcon" aria-hidden="true">${i}</span>${v}</button>`).join('');
+ if(LOCKED()){$('#nav').hidden=true;$('#screen').innerHTML=`<div class="card center"><div style="font-size:44px">⏳</div><h2>Seu período de teste terminou</h2><p>O teste gratuito do Minha Faxina foi até <b>25/11/2026</b>. Para continuar usando, fale com o suporte.</p><div class="tip">Seus dados continuam guardados neste celular. Antes de qualquer coisa, faça sua cópia de segurança:</div><button class="full" data-a="copy" data-t="backup">Copiar minha cópia de segurança</button><p class="small muted">Depois cole a cópia numa conversa com você mesma no WhatsApp.</p></div>`;return}
+ $('#nav').hidden=false;
+ $('#screen').innerHTML=(views[page]||views.home)();if(page==='houseForm')calcHouse();
+ $('#footer').innerHTML='Seus dados ficam só neste aparelho. Toda semana: Mais → Cópia de segurança.<br><br>'+COPY;
+ if(!storageOk)$('#storageWarn').hidden=false}
+
+/* ---------- ações ---------- */
+function setOv(id,o){if(o)S.ov[id]=Object.assign({},S.ov[id]||{},o);else delete S.ov[id];save()}
+function findExtra(id){return S.extras.find(e=>e.id===id)}
+function setStatus(id,st){const e=findExtra(id);if(e){e.st=st;save()}else setOv(id,{st})}
+const perOpts=sel=>Object.keys(PER).map(p=>`<option value="${p}" ${sel===p?'selected':''}>${PER[p]}</option>`).join('');
+const A={
+ go:d=>{if(d.p==='agenda'&&d.x)agDate=d.x;go(d.p,d.x)},
+ ficha:d=>go('ficha',d.h),
+ ag:d=>{agDate=d.x;render()},
+ fm:d=>{finMonth=d.x;render()},
+ feita:d=>{setStatus(d.v,'feita');feedback('Faxina marcada como feita ✓');render()},
+ faltei:d=>{setStatus(d.v,'faltei');feedback('Marcada para repor.');render()},
+ cancelou:d=>openModal(`<h3>A cliente cancelou</h3><p>Você vai repor esta faxina em outro dia?</p><button class="full" data-a="cancelSet" data-v="${d.v}" data-x="cancel-repor">Sim, vou repor</button><button class="light full" data-a="cancelSet" data-v="${d.v}" data-x="cancel">Não vou repor</button><button class="white full" data-a="close">Voltar</button>`),
+ cancelSet:d=>{setStatus(d.v,d.x);closeModal();feedback(d.x==='cancel'?'Cancelada.':'Cancelada · fica para repor.');render()},
+ tirar:d=>openModal(`<h3>Tirar este dia?</h3><p>A faxina some da agenda e não conta no pacote do mês.</p><button class="danger full" data-a="tirarOk" data-v="${d.v}">Sim, tirar este dia</button><button class="white full" data-a="close">Voltar</button>`),
+ tirarOk:d=>{const e=findExtra(d.v);if(e){S.extras=S.extras.filter(x=>x.id!==d.v);if(e.from&&S.ov[e.from]){if(e.kind==='remarcada')delete S.ov[e.from];else delete S.ov[e.from].rep}save()}else setOv(d.v,{st:'tirado'});closeModal();feedback('Dia retirado.');render()},
+ remarcar:d=>{const v=visitsOn(d.v.split('|')[1]||(findExtra(d.v)||{}).date||agDate).find(x=>x.id===d.v)||{};openModal(`<h3>Remarcar faxina</h3><form data-f="remarcar" data-v="${d.v}"><label>Novo dia<input type="date" name="date" required value="${addDays(v.date||agDate,1)}"></label><label>Período<select name="per">${perOpts(v.per||'M')}</select></label><button class="full">Remarcar</button></form><button class="white full" data-a="close">Voltar</button>`)},
+ repor:d=>openModal(`<h3>Agendar reposição</h3><form data-f="repor" data-v="${d.v}"><label>Dia da reposição<input type="date" name="date" required value="${addDays(today(),1)}"></label><label>Período<select name="per">${perOpts('M')}</select></label><button class="full">Agendar</button></form><button class="white full" data-a="close">Voltar</button>`),
+ desfazer:d=>{const e=findExtra(d.v);if(e){e.st='';save()}else{const o=S.ov[d.v]||{};if(o.st==='remarcada'){S.extras=S.extras.filter(x=>!(x.from===d.v&&x.kind==='remarcada'))}if(o.rep){S.extras=S.extras.filter(x=>x.id!==o.rep)}setOv(d.v,null)}feedback('Voltou ao normal.');render()},
+ avulsa:d=>{if(!S.houses.length){feedback('Cadastre uma casa primeiro.',true);return}openModal(`<h3>Faxina extra / avulsa</h3><form data-f="avulsa"><label>Casa<select name="house">${S.houses.map(h=>`<option value="${h.id}" ${d.h===h.id?'selected':''}>${esc(h.cliente)}</option>`).join('')}</select></label><label>Dia<input type="date" name="date" required value="${d.d||today()}"></label><label>Período<select name="per">${perOpts('M')}</select></label><button class="full">Marcar</button></form><button class="white full" data-a="close">Voltar</button>`)},
+ pagar:d=>{const h=house(d.h);const r=monthStats(h,d.m);openModal(`<h3>Pagamento · ${esc(h.cliente)}</h3><form data-f="pagar" data-h="${d.h}" data-m="${d.m}"><label>Valor recebido<input name="value" inputmode="decimal" required value="${r.devido>r.pago?String(r.devido-r.pago).replace('.',','):''}"></label><label>Data<input type="date" name="date" value="${today()}"></label><label>Forma<select name="method"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option></select></label><button class="full">Salvar pagamento</button></form><button class="white full" data-a="close">Voltar</button>`)},
+ delPay:d=>{S.payments=S.payments.filter(p=>p.id!==d.x);save();feedback('Pagamento apagado.');render()},
+ colar:d=>openModal(`<h3>Colar respostas da cliente</h3><p class="small muted">No WhatsApp, segure a mensagem da cliente, toque em Copiar e cole aqui embaixo.</p><form data-f="colar" data-h="${d.h||''}"><textarea name="txt" required style="min-height:150px" aria-label="Respostas da cliente"></textarea><button class="full">Guardar na ficha</button></form><button class="white full" data-a="close">Voltar</button>`),
+ delHouse:d=>openModal(`<h3>Excluir ${esc(house(d.h).cliente)}?</h3><p>A casa, a agenda e os pagamentos dela somem. Não dá para desfazer.</p><button class="danger full" data-a="delHouseOk" data-h="${d.h}">Sim, excluir</button><button class="white full" data-a="close">Voltar</button>`),
+ delHouseOk:d=>{S.houses=S.houses.filter(h=>h.id!==d.h);S.extras=S.extras.filter(e=>e.house!==d.h);S.payments=S.payments.filter(p=>p.house!==d.h);Object.keys(S.ov).forEach(k=>{if(k.startsWith(d.h+'|'))delete S.ov[k]});save();feedback('Casa excluída.');go('houses')},
+ msg:d=>{const h=house(d.h);const ks=['confirma','relatorio','problema','politica','boas'];openModal(`<h3>Mensagem para ${esc(h.cliente)}</h3>${h.phone?ks.map(k=>`<a class="btn light full" href="${esc(waLink(h.phone,fillTpl(k,h,{quando:fmtD(addDays(today(),1))})))}" target="_blank" rel="noopener">${esc(TPL_NAMES[k])}</a>`).join(''):'<p>Esta casa não tem WhatsApp cadastrado.</p>'}<button class="white full" data-a="close">Fechar</button>`)},
+ lockinfo:()=>openModal(`<h3>🔒 Recurso do plano Plus</h3><p>Esse recurso faz parte do plano <b>Plus</b>, que vem junto com o curso: Mais uma Milha, checklist da visita, mensagens prontas, combinados de agenda, relatório do mês, casas ilimitadas e o selo de profissional formada.</p><button class="full" data-a="close">Entendi</button>`),
+ close:()=>closeModal(),
+ ff:d=>{finFilter=d.x;render()},
+ sendTpl:d=>{const hs=S.houses.filter(h=>h.phone);const ym=ymOf(today());openModal(`<h3>Mandar "${esc(TPL_NAMES[d.x])}" para:</h3>${hs.length?hs.map(h=>{const r=monthStats(h,ym);return `<a class="btn light full" href="${esc(waLink(h.phone,fillTpl(d.x,h,{quando:fmtD(addDays(today(),1)),mes:monthName(ym),feitas:r.feitas,valor:money(Math.max(0,r.devido-r.pago))})))}" target="_blank" rel="noopener">${esc(h.cliente)}</a>`}).join(''):'<p>Nenhuma casa tem WhatsApp cadastrado ainda.</p>'}<button class="white full" data-a="close">Fechar</button>`)},
+ welcomed:d=>{const h=house(d.h);if(h){h.welcomed=new Date().toLocaleDateString('pt-BR');save();setTimeout(render,400)}},
+ cadPaste:()=>openModal(`<h3>Colar a resposta da cliente</h3><p class="small muted">No WhatsApp, segure a resposta dela, toque em Copiar e cole aqui.</p><form data-f="cad"><textarea name="txt" required style="min-height:170px" aria-label="Resposta da cliente"></textarea><button class="full">Preencher o cadastro</button></form><button class="white full" data-a="close">Voltar</button>`),
+ color:d=>{S.color=d.x;save();render();feedback('Cor trocada.')},
+ rmImg:d=>{S[d.x]='';save();render()},
+ selo:(d,el)=>{S.selo=el.checked;save();render()},
+ chk:(d,el)=>{const h=house(d.h);h.check=h.check||{};h.check[d.x]=el.checked;save();el.closest('label').classList.toggle('done',el.checked)},
+ checkReset:d=>{house(d.h).check={};save();render();feedback('Checklist pronto para a próxima visita.')},
+ addPack:()=>{S.packs.push({id:uid(),name:'Novo pacote',visits:4,price:0});save();render()},
+ delPack:d=>{S.packs=S.packs.filter(p=>p.id!==d.x);save();render()},
+ tplReset:d=>{delete S.tpl[d.x];save();render();feedback('Modelo original de volta.')},
+ copy:async d=>{let t='';if(d.t==='link')t=myLink();else if(d.t==='backup'){t='MINHAFAXINA1:'+b64e(JSON.stringify(S))}else if(d.t==='cad')t=CAD_MSG;else t=fillTpl(d.t,{cliente:''});
+  try{await navigator.clipboard.writeText(t);if(d.t==='backup'){S.lastBackup=new Date().toLocaleString('pt-BR');save();render()}feedback('Copiado ✓')}catch(e){openModal(`<h3>Copie o texto</h3><p class="small muted">Segure o texto abaixo e escolha Copiar.</p><textarea style="min-height:160px" readonly>${esc(t)}</textarea><button class="full" data-a="close">Fechar</button>`);if(d.t==='backup'){S.lastBackup=new Date().toLocaleString('pt-BR');save()}}},
+ restore:()=>{const v=($('#restoreBox').value||'').trim();const m=v.match(/MINHAFAXINA1:([A-Za-z0-9+/=]+)/);if(!m){feedback('Não reconheci essa cópia.',true);return}try{const o=JSON.parse(b64d(m[1]));if(!o||!Array.isArray(o.houses))throw 0;S=o;save();feedback('Cópia restaurada ✓');go('home')}catch(e){feedback('Cópia com defeito. Confira se copiou tudo.',true)}}
+};
+let taps=0,tapT;
+document.addEventListener('click',e=>{
+ if(e.target.closest('#planBadge')&&!DEMO){taps++;clearTimeout(tapT);tapT=setTimeout(()=>taps=0,1500);if(taps>=5){taps=0;openModal(`<h3>Plano (somente administradora)</h3><button class="full" data-a="setPlan" data-x="Plus">Plus</button><button class="light full" data-a="setPlan" data-x="Básico">Básico</button><button class="white full" data-a="setPlan" data-x="liberar">${S.unlocked?'Voltar a ter prazo de teste':'Liberar sem prazo (cliente pagou)'}</button><button class="white full" data-a="close">Fechar</button>`)}return}
+ const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+ if(a==='setPlan'&&b.dataset.x==='liberar'){S.unlocked=!S.unlocked;save();closeModal();render();feedback(S.unlocked?'Liberado sem prazo':'Prazo de teste ativo');return}
+ if(a==='setPlan'){S.plan=b.dataset.x;save();closeModal();render();feedback('Plano '+S.plan);return}
+ if(A[a]){if(b.tagName!=='INPUT'&&b.tagName!=='A')e.preventDefault();A[a](b.dataset,b)}});
+function calcHouse(chg){const f=document.querySelector('form[data-f=house]');if(!f)return;const E=f.elements;const box=$('#calcBox');
+ if(chg==='service'){const sv=svc(E.service.value);if(sv)E.preco.value=String(sv.price).replace('.',',')}
+ const p=S.packs.find(x=>x.name===E.pack.value);const pv=num(E.preco.value);
+ if(chg==='pack'&&p){E.cob.value='mensal';const v=num(p.price)||p.visits*pv;E.mensal.value=v?String(v).replace('.',','):''}
+ const cob=E.cob.value;let t='';
+ if(cob==='mensal'){const m=num(E.mensal.value);if(p){t=`<b>${esc(p.name)}</b>: ${p.visits} faxina(s) no mês.<br>Valor do mês: <b>${money(m)}</b>`+(p.visits&&m?` · sai <b>${money(m/p.visits)}</b> por faxina`:'')+(num(p.price)?'':`<br><small>Esse pacote ainda não tem preço em Mais → Serviços, pacotes e preços. Calculei ${p.visits} × ${money(pv)}.</small>`)}else t=m?`Valor do mês: <b>${money(m)}</b>`:'Escolha o pacote acima que o valor aparece sozinho.'}
+ else t=pv?`Cobra <b>${money(pv)}</b> por faxina feita. O app soma sozinho no fim do mês.`:'Coloque o valor por visita.';
+ if(box)box.innerHTML=t}
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset&&t.dataset.one&&t.checked){document.querySelectorAll('input[name="'+t.name+'"]').forEach(x=>{if(x!==t)x.checked=false})}
+ if(t.form&&t.form.dataset.f==='house'&&['pack','service','preco','mensal','cob'].includes(t.name))calcHouse(t.name);
+ if(t.id==='logoFile'||t.id==='coverFile'){const f=t.files&&t.files[0];if(!f)return;loadImg(f,t.id==='logoFile'?256:900,url=>{S[t.id==='logoFile'?'logo':'cover']=url;save();render();feedback('Imagem salva.')})}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.hf){const h=house(t.dataset.h);if(h){h[t.dataset.hf]=t.value;save()}}
+ if(t.dataset.tpl){S.tpl[t.dataset.tpl]=t.value;save()}});
+function loadImg(file,max,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL(max<=300?'image/png':'image/jpeg',.82))};im.onerror=()=>feedback('Não consegui abrir essa imagem.',true);im.src=r.result};r.readAsDataURL(file)}
+function parseCad(txt){const N=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();const o={nome:'',fone:'',end:'',bairro:'',dias:[],per:'',freq:''};let hit=0;
+ txt.split(/\n/).forEach(l=>{const i=l.indexOf(':');if(i<0)return;const k=N(l.slice(0,i)),v=l.slice(i+1).trim();if(!v)return;
+  if(/^nome/.test(k)){o.nome=v;hit++}else if(/whats|telefone|celular|fone/.test(k)){o.fone=v;hit++}else if(/endereco/.test(k)){o.end=v;hit++}else if(/bairro/.test(k)){o.bairro=v;hit++}
+  else if(/^dia/.test(k)){hit++;const t=N(v);const map=[['seg',1],['ter',2],['qua',3],['qui',4],['sex',5],['sab',6],['dom',0]];const found=[];map.forEach(([w,n])=>{const p=t.indexOf(w);if(p>-1)found.push([p,n])});found.sort((a,b)=>a[0]-b[0]);
+   if(found.length===2&&/\s(a|ate)\s/.test(t.slice(found[0][0],found[1][0]))){const a=found[0][1],b=found[1][1];for(let d=a;;d=(d+1)%7){o.dias.push(d);if(d===b||o.dias.length>7)break}}else o.dias=found.map(x=>x[1])}
+  else if(/periodo/.test(k)){hit++;const t=N(v);o.per=/dia todo|integral|o dia/.test(t)?'D':/noit/.test(t)?'N':/tard/.test(t)?'T':/manh/.test(t)?'M':''}
+  else if(/frequ/.test(k)){hit++;const t=N(v);o.freq=/15|quinz/.test(t)?'quinzenal':/mes|mensal/.test(t)?'mensal':'semanal'}});
+ return hit?o:null}
+function parseAnswers(txt){const m=txt.match(/APP1:([A-Za-z0-9+/=]+)/);if(m){try{return JSON.parse(b64d(m[1]))}catch(e){}}
+ if(!/POP DA CASA/.test(txt))return null;const a={};const nm=(txt.match(/POP DA CASA\s*[—-]\s*(.+)/)||[])[1];if(nm)a.cliente=nm.trim();
+ const qs={};BLOCKS.forEach(b=>b.qs.forEach(q=>qs[q.id]=q));const ids=Object.keys(LABELS).sort((x,y)=>LABELS[y].length-LABELS[x].length);
+ txt.split(/\n/).forEach(l=>{l=l.replace(/^[\s•*\-]+/,'').trim();for(const id of ids){const lb=LABELS[id]+':';if(l.startsWith(lb)){const v=l.slice(lb.length).trim();if(!v)break;a[id]=qs[id]&&qs[id].type==='checks'?v.split(/,\s*/):v;break}}});
+ return Object.keys(a).length>1?a:null}
+document.addEventListener('submit',e=>{const f=e.target;if(!f.dataset.f)return;e.preventDefault();const F=Object.fromEntries(new FormData(f).entries());const k=f.dataset.f;
+ if(k==='house'){if(!String(F.cliente||'').trim()){feedback('Escreva o nome da cliente.',true);return}
+  let h=f.dataset.h?house(f.dataset.h):null;const days={};[0,1,2,3,4,5,6].forEach(d=>{if(F['d'+d])days[d]=F['d'+d]});
+  const from=F.from||today();const ns={from,freq:F.freq||'semanal',days,wk:parseInt(F.wk)||1};
+  if(!h){h={id:uid(),prefs:{},check:{},milha:'',notes:'',sched:[]};S.houses.push(h)}
+  Object.assign(h,{cliente:F.cliente.trim(),phone:F.phone||'',end:F.end||'',bairro:F.bairro||'',cob:F.cob||'visita',service:F.service||'',preco:num(F.preco),pack:F.pack||'',mensal:num(F.mensal)});
+  if(h.cob==='mensal'&&!h.mensal&&h.pack){const p=S.packs.find(x=>x.name===h.pack);if(p)h.mensal=num(p.price)}
+  const cur=schedFor(h,from);if(!cur||JSON.stringify(cur.days)!==JSON.stringify(days)||cur.freq!==ns.freq||(ns.freq==='mensal'&&cur.wk!==ns.wk)){h.sched=(h.sched||[]).filter(x=>x.from<from);h.sched.push(ns)}
+  save();feedback('Casa salva ✓');go('ficha',h.id)}
+ else if(k==='remarcar'){const id=f.dataset.v;const e2=findExtra(id);if(e2){e2.date=F.date;e2.per=F.per;save()}else{const h=id.split('|')[0];const nx={id:uid(),house:h,date:F.date,per:F.per,kind:'remarcada',from:id,st:''};S.extras.push(nx);setOv(id,{st:'remarcada',to:{date:F.date,per:F.per}})}closeModal();feedback('Remarcada para '+fmtD(F.date));render()}
+ else if(k==='repor'){const id=f.dataset.v;const e2=findExtra(id);const h=e2?e2.house:id.split('|')[0];const nx={id:uid(),house:h,date:F.date,per:F.per,kind:'reposicao',from:id,st:''};S.extras.push(nx);if(e2){e2.rep=nx.id}else setOv(id,{rep:nx.id});save();closeModal();feedback('Reposição agendada ✓');render()}
+ else if(k==='avulsa'){S.extras.push({id:uid(),house:F.house,date:F.date,per:F.per,kind:'avulsa',st:''});save();closeModal();feedback('Faxina marcada ✓');render()}
+ else if(k==='pagar'){S.payments.push({id:uid(),house:f.dataset.h,month:f.dataset.m,value:num(F.value),date:F.date||today(),method:F.method});save();closeModal();feedback('Pagamento salvo ✓');render()}
+ else if(k==='colar'){const txt=F.txt||'';const ans=parseAnswers(txt);let h=f.dataset.h?house(f.dataset.h):null;
+  if(!h){if(!PLUS()&&S.houses.length>=LIMIT_BASICO){closeModal();A.lockinfo();return}const nm=(ans&&aval(ans,'cliente'))||((txt.match(/POP DA CASA — (.+)/)||[])[1]||'').trim()||'Nova cliente';h={id:uid(),cliente:nm,phone:(ans&&aval(ans,'fone'))||'',end:(ans&&aval(ans,'q1'))||'',bairro:'',cob:'visita',service:(S.services[0]||{}).id,preco:num((S.services[0]||{}).price),pack:'',mensal:0,sched:[],prefs:{},check:{},milha:'',notes:''};S.houses.push(h)}
+  if(ans){h.prefs=ans;delete h.prefsText;if(!h.phone&&aval(ans,'fone'))h.phone=aval(ans,'fone')}else{h.prefsText=txt.trim();h.prefs={}}h.prefsDate=new Date().toLocaleDateString('pt-BR');save();closeModal();feedback(ans?'Preferências guardadas ✓':'Texto guardado na ficha ✓');go('ficha',h.id)}
+ else if(k==='cad'){const c=parseCad(F.txt||'');const hf=document.querySelector('form[data-f=house]');closeModal();if(!hf||!c){feedback('Não reconheci a resposta. Confira se ela usou a mensagem.',true);return}
+  const set=(n,v)=>{if(v&&hf.elements[n])hf.elements[n].value=v};set('cliente',c.nome);set('phone',c.fone);set('end',c.end);set('bairro',c.bairro);
+  if(c.dias.length){hf.querySelectorAll('.dayRow input').forEach(x=>{const d=+x.name.slice(1);x.checked=c.dias.includes(d)&&x.value===(c.per||'M')})}if(c.freq)hf.elements.freq.value=c.freq;
+  feedback('Preenchido! Confira e toque em Salvar casa.');hf.scrollIntoView({behavior:'smooth'})}
+ else if(k==='pro'){S.pro={name:(F.name||'').trim(),phone:(F.phone||'').trim()};if(String(S.pro.phone).replace(/\D/g,'').length<10){feedback('Confira o WhatsApp: DDD + número.',true);return}save();feedback('Link pronto ✓');render()}
+ else if(k==='svc'){const x=S.services.find(s=>s.id===f.dataset.x);x.name=F.name;x.price=num(F.price);save();feedback('Serviço salvo ✓');render()}
+ else if(k==='svcNew'){S.services.push({id:uid(),name:F.name,price:num(F.price)});save();render()}
+ else if(k==='pack'){const x=S.packs.find(s=>s.id===f.dataset.x);x.name=F.name;x.visits=parseInt(F.visits)||0;x.price=num(F.price);save();feedback('Pacote salvo ✓');render()}
+ else if(k==='proName'){S.pro.name=(F.pname||'').trim();save();render();feedback('Nome salvo ✓')}
+ else if(k==='name'){S.name=(F.name||'').trim()||'Minha Faxina';save();render();feedback('Nome salvo.')}
+});
+save();render();
+})();
+</script>
+</body>
+</html>
