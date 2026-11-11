@@ -39,6 +39,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 a.btn{display:block;text-align:center;text-decoration:none;border-radius:14px;padding:13px 16px;font-weight:600;background:linear-gradient(135deg,var(--dark),var(--c));color:#fff}
 a.btn.light{background:var(--soft);color:var(--dark);border:1px solid var(--line)}
 .full{display:block;width:100%;margin:8px 0}
+.micBtn{font-size:20px;padding:18px;margin:12px 0 4px;border-radius:18px}
+.micBtn.on{background:var(--bad);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 #b3261e55}50%{box-shadow:0 0 0 12px #b3261e00}}
 .notice{font-size:11px;background:var(--soft2);color:var(--dark);padding:5px;text-align:center}
 #storageWarn{background:var(--bad);color:#fff;padding:12px;text-align:center;font-size:14px}
 header{max-width:580px;margin:auto;background:linear-gradient(140deg,var(--dark),var(--c));color:#fff;border-radius:0 0 34px 34px;padding:22px 20px 28px;display:flex;align-items:center;gap:14px;justify-content:center;box-shadow:0 6px 20px #0002;position:relative}
@@ -315,6 +318,15 @@ function clientForm(pro){
    return `<label for="${id}">${esc(q.t)}${q.req?' *':''}${q.hint?`<br><small>${esc(q.hint)}</small>`:''}${inp}</label>`}
   const multi=q.type==='checks';const cur=ans[q.id];
   return `<div role="${multi?'group':'radiogroup'}" aria-labelledby="${id}-l" style="margin:14px 0"><div id="${id}-l" style="font-weight:600;font-size:14px">${esc(q.t)}</div>${q.hint?`<small class="muted">${esc(q.hint)}</small>`:''}<div class="chips">${q.opts.map((o,i)=>`<label class="chip" style="margin:0"><input type="${multi?'checkbox':'radio'}" name="${id}" data-q="${q.id}" data-multi="${multi?1:''}" value="${esc(o)}" ${(multi?Array.isArray(cur)&&cur.includes(o):cur===o)?'checked':''}><span>${esc(o)}</span></label>`).join('')}</div></div>`}
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,listening=false,base='';
+ function micSet(on){listening=on;const b=$('#micBtn'),st=$('#micStatus');if(b){b.classList.toggle('on',on);b.textContent=on?'⏹ Parar de falar':'🎤 Toque aqui e fale'}if(st)st.textContent=on?'Estou ouvindo… pode falar à vontade.':''}
+ function micToggle(){if(listening){try{rec.stop()}catch(e){}micSet(false);return}
+  try{rec=new SR();rec.lang='pt-BR';rec.continuous=true;rec.interimResults=true;const ta=$('#f-voz');base=ta.value.trim()?ta.value.trim()+' ':'';
+   rec.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;ta.value=base+t;ans.voz=ta.value;sv()};
+   rec.onerror=e=>{micSet(false);$('#micStatus').textContent=e.error==='not-allowed'||e.error==='service-not-allowed'?'Libere o microfone para este site, ou use o 🎤 do teclado.':'Não consegui ouvir. Toque de novo ou use o 🎤 do teclado.'};
+   rec.onend=()=>{if(listening){try{rec.start()}catch(e){micSet(false)}}};
+   rec.start();micSet(true)}catch(e){micSet(false);$('#micStatus').textContent='Use o 🎤 do teclado do celular para falar.'}}
+ function vozText(){return 'PREFERÊNCIAS DA CASA — '+aval(ans,'cliente')+(aval(ans,'fone')?'\nWhatsApp: '+aval(ans,'fone'):'')+'\n\nEm palavras da cliente:\n'+aval(ans,'voz')}
  function popText(){
   const lines=['POP DA CASA — '+(aval(ans,'cliente')||'(cliente)'),'Preenchido pela cliente em '+new Date().toLocaleDateString('pt-BR'),''];
   POP.forEach(([t,ids])=>{const p=ids.map(id=>{const v=aval(ans,id);return v?'• '+LABELS[id]+': '+flat(v):null}).filter(Boolean);lines.push('*'+t.toUpperCase()+'*');lines.push(p.length?p.join('\n'):'• (sem resposta)');lines.push('')});
@@ -323,7 +335,19 @@ function clientForm(pro){
  function draw(){
   const m=$('#screen');const pct=step===0?0:Math.round(Math.min(step,N)/N*100);
   let h=step>0&&step<=N?`<div class="progress"><i style="width:${pct}%"></i></div><div class="steplabel">Etapa ${step} de ${N} · ${esc(BLOCKS[step-1].title)}</div>`:'';
-  if(step===0){h+=`<div class="card">${ART(true)}<p class="welcome">Olá! Eu sou ${esc(pro.name)}. Antes da nossa primeira limpeza, quero conhecer a sua casa e o jeito que você gosta das coisas.</p><p class="muted">Assim eu já chego sabendo o que é prioridade, o que exige cuidado e o que não deve ser mexido. Leva uns 10 minutos. Só o seu nome é obrigatório.</p><div class="tip">Suas respostas ficam só neste aparelho até você tocar em Enviar. Elas vão direto para o meu WhatsApp.</div><button class="full" data-c="next">Começar</button></div>`}
+  if(step===0){h+=`<div class="card">${ART(true)}<p class="welcome">Olá! Eu sou ${esc(pro.name)} 💚</p><p>Quero conhecer melhor a sua casa e o jeito que você gosta das coisas, para cuidar de tudo do seu jeito e fazer o melhor serviço.</p>
+  <label for="f-cliente">Seu nome *<input id="f-cliente" data-q="cliente" value="${esc(ans.cliente||'')}" autocomplete="name"></label>
+  <label for="f-fone">Seu WhatsApp<input id="f-fone" data-q="fone" inputmode="tel" value="${esc(ans.fone||'')}"></label>
+  <p style="font-weight:700;margin:18px 0 6px;color:var(--dark)">Me conta como você gosta da sua casa</p>
+  <div class="tip small">Pode falar sobre:<br>• o que é mais importante limpar<br>• o que eu não devo mexer<br>• produtos que você gosta ou não pode usar<br>• crianças, animais ou alergias<br>• roupas, cama e toalhas<br>• aquele detalhe que te deixa feliz ao chegar em casa ✨</div>
+  <button type="button" id="micBtn" class="micBtn full" data-c="mic" ${SR?'':'hidden'}>🎤 Toque aqui e fale</button>
+  <p id="micStatus" class="small center muted" role="status" aria-live="polite"></p>
+  <textarea id="f-voz" data-q="voz" style="min-height:190px" aria-label="Suas preferências" placeholder="${SR?'O que você falar aparece aqui. Pode também escrever.':'Escreva aqui, ou toque no 🎤 do teclado do celular para falar.'}">${esc(ans.voz||'')}</textarea>
+  ${SR?'<p class="small muted">Se o botão não funcionar, toque no 🎤 do teclado do celular.</p>':''}
+  <p id="err" class="small" style="color:var(--bad)" role="alert"></p>
+  <button class="full" data-c="sendVoz">Enviar pelo WhatsApp</button>
+  <div class="tip small">Vai direto para o meu WhatsApp. Obrigada! 💚</div>
+  <button class="white full" data-c="perguntas">Prefiro responder perguntas</button></div>`}
   else if(step<=N){const b=BLOCKS[step-1];h+=`<div class="card"><h2>${esc(b.title)}</h2>${b.note?`<p class="muted small">${esc(b.note)}</p>`:''}${b.qs.map(field).join('')}<p id="err" class="small" style="color:var(--bad)" role="alert"></p><div class="grid2"><button class="white" data-c="back">Voltar</button><button data-c="next">${step===N?'Revisar':'Continuar'}</button></div></div>`}
   else{const t=popText();
    const photos=ans.q13f==='Sim, vou mandar no WhatsApp';
@@ -331,7 +355,12 @@ function clientForm(pro){
    <div class="tip"><b>${photos?'Depois de enviar, mande as fotos':'Tem fotos de algum dano?'}</b><br>Na mesma conversa do WhatsApp: toque no clipe 📎 (ou no + no iPhone), escolha as fotos e escreva onde fica cada dano.</div></div>`}
   m.innerHTML=h;scrollTo(0,0)}
  document.addEventListener('input',e=>{const q=e.target.dataset&&e.target.dataset.q;if(!q)return;if(e.target.type==='checkbox'){const s=new Set(Array.isArray(ans[q])?ans[q]:[]);e.target.checked?s.add(e.target.value):s.delete(e.target.value);ans[q]=[...s]}else ans[q]=e.target.value;sv()});
- document.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;if(b.dataset.c==='next'){if(step===1&&!aval(ans,'cliente')){$('#err').textContent='Escreva seu nome para continuar.';$('#f-cliente').focus();return}step++}else step--;draw()});
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;const c=b.dataset.c;
+  if(c==='mic'){micToggle();return}
+  if(c==='perguntas'){if(listening)micToggle();step=1;draw();return}
+  if(c==='sendVoz'){if(listening)micToggle();if(!aval(ans,'cliente')){$('#err').textContent='Escreva seu nome.';$('#f-cliente').focus();return}if(!aval(ans,'voz')){$('#err').textContent='Fale ou escreva como você gosta da sua casa.';$('#f-voz').focus();return}
+   const u=waLink(pro.phone,vozText());const w=window.open(u,'_blank');if(!w)location.href=u;return}
+  if(c==='next'){if(step===1&&!aval(ans,'cliente')){$('#err').textContent='Escreva seu nome para continuar.';$('#f-cliente').focus();return}step++}else step--;draw()});
  draw()}
 
 /* ================= APP DA PROFISSIONAL ================= */
@@ -342,7 +371,7 @@ const TRIAL_END='2026-11-25';
 const daysLeft=()=>Math.round((parse(TRIAL_END)-parse(today()))/864e5);
 const LOCKED=()=>!DEMO&&today()>TRIAL_END&&!S.unlocked;
 const DEF_TPL={
- boas:"Olá, {cliente}! Aqui é {profissional}. Antes da nossa primeira limpeza, quero conhecer sua casa e o jeito que você gosta das coisas. Leva uns 10 minutinhos: {link}\nObrigada!",
+ boas:"Olá, {cliente}! Aqui é {profissional}. Quero conhecer melhor a sua casa e o jeito que você gosta das coisas, para fazer o melhor serviço. É só abrir o link e me contar falando (tem microfone): {link}\nObrigada!",
  confirma:"Oi, {cliente}! Passando para confirmar nossa faxina amanhã ({quando}). Até lá! {profissional}",
  problema:"Oi, {cliente}! Durante a limpeza encontrei: ______. Não mexi em nada além do necessário. Quer que eu faça algo? {profissional}",
  relatorio:"Oi, {cliente}! Faxina de hoje concluída ✨\n• Feito: ______\n• Atenção: ______\n• Mais uma Milha de hoje: ______\nQualquer coisa me avise. {profissional}",
@@ -642,6 +671,7 @@ function parseCad(txt){const N=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,
   else if(/periodo/.test(k)){hit++;const t=N(v);o.per=/dia todo|integral|o dia/.test(t)?'D':/noit/.test(t)?'N':/tard/.test(t)?'T':/manh/.test(t)?'M':''}
   else if(/frequ/.test(k)){hit++;const t=N(v);o.freq=/15|quinz/.test(t)?'quinzenal':/mes|mensal/.test(t)?'mensal':'semanal'}});
  return hit?o:null}
+function parseVoz(txt){const m=txt.match(/PREFER[ÊE]NCIAS DA CASA\s*[—-]\s*(.+)/i);if(!m)return null;const f=(txt.match(/WhatsApp:\s*(.+)/)||[])[1]||'';const i=txt.search(/Em palavras da cliente:/i);const texto=i>-1?txt.slice(i).replace(/Em palavras da cliente:\s*/i,'').trim():txt.trim();return {nome:m[1].trim(),fone:f.trim(),texto}}
 function parseAnswers(txt){const m=txt.match(/APP1:([A-Za-z0-9+/=]+)/);if(m){try{return JSON.parse(b64d(m[1]))}catch(e){}}
  if(!/POP DA CASA/.test(txt))return null;const a={};const nm=(txt.match(/POP DA CASA\s*[—-]\s*(.+)/)||[])[1];if(nm)a.cliente=nm.trim();
  const qs={};BLOCKS.forEach(b=>b.qs.forEach(q=>qs[q.id]=q));const ids=Object.keys(LABELS).sort((x,y)=>LABELS[y].length-LABELS[x].length);
@@ -660,9 +690,9 @@ document.addEventListener('submit',e=>{const f=e.target;if(!f.dataset.f)return;e
  else if(k==='repor'){const id=f.dataset.v;const e2=findExtra(id);const h=e2?e2.house:id.split('|')[0];const nx={id:uid(),house:h,date:F.date,per:F.per,kind:'reposicao',from:id,st:''};S.extras.push(nx);if(e2){e2.rep=nx.id}else setOv(id,{rep:nx.id});save();closeModal();feedback('Reposição agendada ✓');render()}
  else if(k==='avulsa'){S.extras.push({id:uid(),house:F.house,date:F.date,per:F.per,kind:'avulsa',st:''});save();closeModal();feedback('Faxina marcada ✓');render()}
  else if(k==='pagar'){S.payments.push({id:uid(),house:f.dataset.h,month:f.dataset.m,value:num(F.value),date:F.date||today(),method:F.method});save();closeModal();feedback('Pagamento salvo ✓');render()}
- else if(k==='colar'){const txt=F.txt||'';const ans=parseAnswers(txt);let h=f.dataset.h?house(f.dataset.h):null;
-  if(!h){if(!PLUS()&&S.houses.length>=LIMIT_BASICO){closeModal();A.lockinfo();return}const nm=(ans&&aval(ans,'cliente'))||((txt.match(/POP DA CASA — (.+)/)||[])[1]||'').trim()||'Nova cliente';h={id:uid(),cliente:nm,phone:(ans&&aval(ans,'fone'))||'',end:(ans&&aval(ans,'q1'))||'',bairro:'',cob:'visita',service:(S.services[0]||{}).id,preco:num((S.services[0]||{}).price),pack:'',mensal:0,sched:[],prefs:{},check:{},milha:'',notes:''};S.houses.push(h)}
-  if(ans){h.prefs=ans;delete h.prefsText;if(!h.phone&&aval(ans,'fone'))h.phone=aval(ans,'fone')}else{h.prefsText=txt.trim();h.prefs={}}h.prefsDate=new Date().toLocaleDateString('pt-BR');save();closeModal();feedback(ans?'Preferências guardadas ✓':'Texto guardado na ficha ✓');go('ficha',h.id)}
+ else if(k==='colar'){const txt=F.txt||'';const ans=parseAnswers(txt);const vz=ans?null:parseVoz(txt);let h=f.dataset.h?house(f.dataset.h):null;
+  if(!h){if(!PLUS()&&S.houses.length>=LIMIT_BASICO){closeModal();A.lockinfo();return}const nm=(ans&&aval(ans,'cliente'))||(vz&&vz.nome)||((txt.match(/POP DA CASA — (.+)/)||[])[1]||'').trim()||'Nova cliente';h={id:uid(),cliente:nm,phone:(ans&&aval(ans,'fone'))||(vz&&vz.fone)||'',end:(ans&&aval(ans,'q1'))||'',bairro:'',cob:'visita',service:(S.services[0]||{}).id,preco:num((S.services[0]||{}).price),pack:'',mensal:0,sched:[],prefs:{},check:{},milha:'',notes:''};S.houses.push(h)}
+  if(ans){h.prefs=ans;delete h.prefsText;if(!h.phone&&aval(ans,'fone'))h.phone=aval(ans,'fone')}else{h.prefsText=vz?vz.texto:txt.trim();h.prefs={};if(vz&&vz.fone&&!h.phone)h.phone=vz.fone}h.prefsDate=new Date().toLocaleDateString('pt-BR');save();closeModal();feedback(ans?'Preferências guardadas ✓':'Texto guardado na ficha ✓');go('ficha',h.id)}
  else if(k==='cad'){const c=parseCad(F.txt||'');const hf=document.querySelector('form[data-f=house]');closeModal();if(!hf||!c){feedback('Não reconheci a resposta. Confira se ela usou a mensagem.',true);return}
   const set=(n,v)=>{if(v&&hf.elements[n])hf.elements[n].value=v};set('cliente',c.nome);set('phone',c.fone);set('end',c.end);set('bairro',c.bairro);
   if(c.dias.length){hf.querySelectorAll('.dayRow input').forEach(x=>{const d=+x.name.slice(1);x.checked=c.dias.includes(d)&&x.value===(c.per||'M')})}if(c.freq)hf.elements.freq.value=c.freq;
